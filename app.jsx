@@ -23,7 +23,7 @@ function App() {
 
   // Active section observer
   React.useEffect(() => {
-    const ids = ['about', 'portfolio', 'career', 'contact'];
+    const ids = ['about', 'portfolio', 'career', 'path', 'why-me', 'contact'];
     const opts = { rootMargin: '-35% 0px -55% 0px', threshold: 0 };
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });

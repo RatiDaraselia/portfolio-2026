@@ -265,7 +265,7 @@ function Career() {
 
         <div style={{ height: 80 }} />
 
-        <div className="section-head reveal">
+        <div id="path" className="section-head reveal">
           <h2>Path</h2>
           <div className="meta" style={{ fontFamily: "\"JetBrains Mono\"" }}>[ 03 — Education & Certification ]</div>
         </div>
@@ -294,7 +294,7 @@ const BENEFITS = [
 
 function Benefits({ copyEmail }) {
   return (
-    <section className="block">
+    <section className="block" id="why-me">
       <div className="wrap">
         <div className="section-head reveal">
           <h2>Why me</h2>
