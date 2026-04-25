@@ -7,20 +7,20 @@ function Nav({ active, onNav }) {
     return () => window.removeEventListener('scroll', on);
   }, []);
   const items = [
-  { id: 'about', label: 'About' },
-  { id: 'portfolio', label: 'Portfolio' },
-  { id: 'career', label: 'Career' },
-  { id: 'path', label: 'Path' },
-  { id: 'why-me', label: 'Why me' },
-  { id: 'contact', label: 'Contact' }];
+    { id: 'about', label: 'About' },
+    { id: 'portfolio', label: 'Portfolio' },
+    { id: 'career', label: 'Career' },
+    { id: 'path', label: 'Path' },
+    { id: 'why-me', label: 'Why me' },
+    { id: 'contact', label: 'Contact' }];
 
   return (
     <div className="nav-wrap">
       <nav className={`nav ${cond ? 'condensed' : ''}`} aria-label="Primary">
         {items.map((it) =>
-        <a key={it.id} href={`#${it.id}`}
-        className={`nav-link ${active === it.id ? 'active' : ''}`}
-        onClick={(e) => {e.preventDefault();onNav(it.id);}}>
+          <a key={it.id} href={`#${it.id}`}
+            className={`nav-link ${active === it.id ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); onNav(it.id); }}>
             <span className="dot" aria-hidden />
             {it.label}
           </a>
@@ -35,8 +35,10 @@ function Avatar({ size = 40 }) {
   return (
     <div className="avatar" style={{ width: size, height: size, flex: `0 0 ${size}px` }} aria-hidden>
       <img src="assets/portrait.jpg" alt=""
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%',
-        objectFit: 'cover', objectPosition: '60% 28%' }} />
+        style={{
+          position: 'absolute', inset: 0, width: '100%', height: '100%',
+          objectFit: 'cover', objectPosition: '60% 28%'
+        }} />
     </div>);
 
 }
@@ -44,7 +46,7 @@ function Avatar({ size = 40 }) {
 // ─── Hero ──────────────────────────────────────────────────────────
 function Hero({ layout = 'editorial', copyEmail }) {
   const inner =
-  <>
+    <>
       <div className="hero-top">
         <Avatar size={88} />
         <div className="status">
@@ -59,7 +61,7 @@ function Hero({ layout = 'editorial', copyEmail }) {
 
 
 
-    </p>
+      </p>
       <div className="cta-row">
         <button className="btn btn-solid" onClick={copyEmail}>
           <Icon.Mail /> Get in touch <span className="arrow">→</span>
@@ -74,7 +76,7 @@ function Hero({ layout = 'editorial', copyEmail }) {
     <section className="hero" data-layout={layout} id="about">
       <div className="wrap">
         {layout === 'split' ?
-        <div className="hero-grid">
+          <div className="hero-grid">
             <Avatar size={92} />
             <div>
               <div className="status" style={{ marginBottom: 18 }}>
@@ -98,7 +100,7 @@ function Hero({ layout = 'editorial', copyEmail }) {
               </div>
             </div>
           </div> :
-        inner}
+          inner}
       </div>
     </section>);
 
@@ -107,17 +109,17 @@ function Hero({ layout = 'editorial', copyEmail }) {
 // ─── Marquee + utility row ─────────────────────────────────────────
 function Marquee({ sep = 'slash' }) {
   const items = [
-  'Product Design', 'Design Systems', 'Vision OS', 'SaaS Architecture',
-  'Spatial UI', 'Interaction Design', 'Prototyping', 'Figma Variables',
-  'Information Design', 'Motion', 'Dev Handoff'];
+    'Product Design', 'Design Systems', 'Vision OS', 'SaaS Architecture',
+    'Spatial UI', 'Interaction Design', 'Prototyping', 'Figma Variables',
+    'Information Design', 'Motion', 'Dev Handoff'];
 
   const row =
-  <div className="chip">
+    <div className="chip">
       {items.map((it, i) =>
-    <React.Fragment key={i}>
+        <React.Fragment key={i}>
           <span>{it}</span><span className="sep" />
         </React.Fragment>
-    )}
+      )}
     </div>;
 
   return (
@@ -157,12 +159,12 @@ function nowTbilisi() {
 
 // ─── Projects ──────────────────────────────────────────────────────
 const PROJECTS = [
-{ id: 'axiom', name: 'Axiom', tag: 'SaaS · Analytics', date: 'Aug 2024', img: 'assets/axiom-thumbnail.jpg', link: '#' },
-{ id: 'garder', name: 'Garderobe', tag: 'E-commerce · Fashion', date: 'Jan 2026', img: 'assets/garderobe-thumbnail.jpg', link: '#' },
-{ id: 'solvaer', name: 'Solvær', tag: 'Spatial · visionOS', date: 'Oct 2025', img: 'assets/solvaer-thumbnail.jpg', link: '#' },
-{ id: 'nora', name: 'nora', tag: 'Agent · Productivity', date: 'Aug 2025', img: 'assets/nora-thumbnail.jpg', link: '#' },
-{ id: 'aquageo', name: 'AquaGeo', tag: 'Enterprise · GIS', date: 'Apr 2025', glyph: 'AQ', link: '#' },
-{ id: 'halcyon', name: 'Halcyon', tag: 'Fintech · Mobile', date: 'Feb 2025', glyph: 'HA', link: '#' }];
+  { id: 'axiom', name: 'Axiom', tag: 'SaaS · Analytics', date: 'Aug 2024', img: 'assets/axiom-thumbnail.jpg', link: '#' },
+  { id: 'garder', name: 'Garderobe', tag: 'E-commerce · Fashion', date: 'Jan 2026', img: 'assets/garderobe-thumbnail.jpg', link: '#' },
+  { id: 'solvaer', name: 'Solvær', tag: 'Spatial · visionOS', date: 'Oct 2025', img: 'assets/solvaer-thumbnail.jpg', link: '#' },
+  { id: 'nora', name: 'nora', tag: 'Agent · Productivity', date: 'Aug 2025', img: 'assets/nora-thumbnail.jpg', link: '#' },
+  { id: 'aquageo', name: 'AquaGeo', tag: 'Enterprise · GIS', date: 'Apr 2025', glyph: 'AQ', link: '#' },
+  { id: 'halcyon', name: 'Halcyon', tag: 'Fintech · Mobile', date: 'Feb 2025', glyph: 'HA', link: '#' }];
 
 
 function ProjectThumb({ project, variant }) {
@@ -223,7 +225,7 @@ function Projects({ variant = 'stripes', density = 'regular', count = 4 }) {
         </div>
         <div className="project-grid" data-density={density}>
           {PROJECTS.slice(0, count).map((p, i) =>
-          <ProjectCard key={p.id} p={p} variant={variant} revealDelay={(i + 1) * 150} />
+            <ProjectCard key={p.id} p={p} variant={variant} revealDelay={(i + 1) * 150} />
           )}
         </div>
       </div>
@@ -233,15 +235,15 @@ function Projects({ variant = 'stripes', density = 'regular', count = 4 }) {
 
 // ─── Career ────────────────────────────────────────────────────────
 const CAREER = [
-{ role: 'Lead Designer', co: 'AquaGeo — Enterprise GIS', when: '2024 — Present', type: 'Full-time' },
-{ role: 'Senior Product Designer', co: 'Garderobe — Redesign', when: '2023 — 2024', type: 'Contract' },
-{ role: 'Product Designer', co: 'Solvær — Spatial / visionOS', when: '2022 — 2023', type: 'Contract' },
-{ role: 'UI/UX Designer', co: 'nora — Agent Productivity', when: '2021 — 2022', type: 'Freelance' }];
+  { role: 'Lead Designer', co: 'AquaGeo — Enterprise GIS', when: '2024 — Present', type: 'Full-time' },
+  { role: 'Senior Product Designer', co: 'Garderobe — Redesign', when: '2023 — 2024', type: 'Contract' },
+  { role: 'Product Designer', co: 'Solvær — Spatial / visionOS', when: '2022 — 2023', type: 'Contract' },
+  { role: 'UI/UX Designer', co: 'nora — Agent Productivity', when: '2021 — 2022', type: 'Freelance' }];
 
 const EDU = [
-{ role: 'Computer Science, B.Sc.', co: 'SANGU — St. Andrew\'s University', when: '2018 — 2022', type: 'Education' },
-{ role: 'Google UX Design Professional', co: 'Coursera · Google', when: '2021', type: 'Certificate' },
-{ role: 'Interaction Design Foundation', co: 'UX Research & Strategy', when: '2022', type: 'Certificate' }];
+  { role: 'Computer Science, B.Sc.', co: 'SANGU — St. Andrew\'s University', when: '2018 — 2022', type: 'Education' },
+  { role: 'Google UX Design Professional', co: 'Coursera · Google', when: '2021', type: 'Certificate' },
+  { role: 'Interaction Design Foundation', co: 'UX Research & Strategy', when: '2022', type: 'Certificate' }];
 
 
 function Career() {
@@ -254,7 +256,7 @@ function Career() {
         </div>
         <div className="list" role="list">
           {CAREER.map((r, i) =>
-          <div className="item reveal" role="listitem" key={i} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
+            <div className="item reveal" role="listitem" key={i} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
               <div className="role">{r.role}</div>
               <div className="co">{r.co}</div>
               <div className="when">{r.when}</div>
@@ -271,7 +273,7 @@ function Career() {
         </div>
         <div className="list" role="list">
           {EDU.map((r, i) =>
-          <div className="item reveal" role="listitem" key={i} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
+            <div className="item reveal" role="listitem" key={i} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
               <div className="role">{r.role}</div>
               <div className="co">{r.co}</div>
               <div className="when">{r.when}</div>
@@ -286,10 +288,10 @@ function Career() {
 
 // ─── Benefits ──────────────────────────────────────────────────────
 const BENEFITS = [
-{ icon: <Icon.Scale />, n: '01', t: 'Scalability', d: 'Systems built to grow — token architectures and primitives that hold their shape from marketing page to admin console.' },
-{ icon: <Icon.Crosshair />, n: '02', t: 'Precision', d: 'Pixel-accurate, spec-tight output. Every spacing value, every radius, every transition is deliberate and defensible.' },
-{ icon: <Icon.Terminal />, n: '03', t: 'Developer-Ready', d: 'Figma files ship like code. Variables, variants, naming conventions and documentation your engineers will actually read.' },
-{ icon: <Icon.Schema />, n: '04', t: 'Systemic Logic', d: 'Abstract product logic made legible. Flows, states, edge cases — surfaced before implementation costs multiply.' }];
+  { icon: <Icon.Scale />, n: '01', t: 'Scalability', d: 'Systems built to grow — token architectures and primitives that hold their shape from marketing page to admin console.' },
+  { icon: <Icon.Crosshair />, n: '02', t: 'Precision', d: 'Pixel-accurate, spec-tight output. Every spacing value, every radius, every transition is deliberate and defensible.' },
+  { icon: <Icon.Terminal />, n: '03', t: 'Developer-Ready', d: 'Figma files ship like code. Variables, variants, naming conventions and documentation your engineers will actually read.' },
+  { icon: <Icon.Schema />, n: '04', t: 'Systemic Logic', d: 'Abstract product logic made legible. Flows, states, edge cases — surfaced before implementation costs multiply.' }];
 
 
 function Benefits({ copyEmail }) {
@@ -302,7 +304,7 @@ function Benefits({ copyEmail }) {
         </div>
         <div className="benefits">
           {BENEFITS.map((b, i) =>
-          <div className="benefit reveal" key={b.n} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
+            <div className="benefit reveal" key={b.n} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
               <div className="num">{b.n}</div>
               <div className="icon">{b.icon}</div>
               <h3>{b.t}</h3>
@@ -339,7 +341,7 @@ function Footer({ copyEmail }) {
           <div className="eyebrow reveal" style={{ marginBottom: 18 }}>[ 05 — Get in Touch ]</div>
           <h2 className="reveal" style={{ animationDelay: '150ms' }}>Let's get in touch.</h2>
           <p className="reveal" style={{ animationDelay: '300ms' }}>Currently taking on a small number of Q3 engagements.
-             I reply to every inbound within 24 hours.</p>
+            I reply to every inbound within 24 hours.</p>
           <div className="reveal" style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', animationDelay: '450ms' }}>
             <button className="btn btn-solid" onClick={copyEmail}>
               <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow">→</span>
@@ -374,7 +376,7 @@ function Footer({ copyEmail }) {
             <a href="#">Instagram <span style={{ opacity: .4 }}>↗</span></a>
           </div>
           <div className="col">
-            <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"{ELSEWHERE ]"}</div>
+            <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"[ ELSEWHERE ]"}</div>
             <a href="#">Twitter / X <span style={{ opacity: .4 }}>↗</span></a>
             <a href="#">Read.cv <span style={{ opacity: .4 }}>↗</span></a>
             <a href="#">Resume PDF <span style={{ opacity: .4 }}>↓</span></a>
