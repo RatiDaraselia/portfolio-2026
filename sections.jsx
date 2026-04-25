@@ -7,9 +7,11 @@ function Nav({ active, onNav }) {
     return () => window.removeEventListener('scroll', on);
   }, []);
   const items = [
-  { id: 'portfolio', label: 'Portfolio' },
   { id: 'about', label: 'About' },
+  { id: 'portfolio', label: 'Portfolio' },
   { id: 'career', label: 'Career' },
+  { id: 'path', label: 'Path' },
+  { id: 'why-me', label: 'Why me' },
   { id: 'contact', label: 'Contact' }];
 
   return (
