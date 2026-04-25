@@ -246,6 +246,18 @@ const EDU = [
   { role: 'Interaction Design Foundation', co: 'UX Research & Strategy', when: '2022', type: 'Certificate' }];
 
 
+function CoCell({ value }) {
+  const sep = ' — ';
+  const idx = value.indexOf(sep);
+  if (idx === -1) return <div className="co">{value}</div>;
+  return (
+    <div className="co">
+      <div style={{ color:'var(--fg-1)', lineHeight:1.2 }}>{value.slice(0, idx)} —</div>
+      <div style={{ color:'rgba(255,255,255,0.4)', fontSize:12, lineHeight:1.2 }}>{value.slice(idx + sep.length)}</div>
+    </div>
+  );
+}
+
 function Career() {
   return (
     <section className="block" id="career">
@@ -258,7 +270,7 @@ function Career() {
           {CAREER.map((r, i) =>
             <div className="item reveal" role="listitem" key={i} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
               <div className="role">{r.role}</div>
-              <div className="co">{r.co}</div>
+              <CoCell value={r.co} />
               <div className="when">{r.when}</div>
               <div className="type">{r.type}</div>
             </div>
@@ -275,7 +287,7 @@ function Career() {
           {EDU.map((r, i) =>
             <div className="item reveal" role="listitem" key={i} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
               <div className="role">{r.role}</div>
-              <div className="co">{r.co}</div>
+              <CoCell value={r.co} />
               <div className="when">{r.when}</div>
               <div className="type">{r.type}</div>
             </div>
