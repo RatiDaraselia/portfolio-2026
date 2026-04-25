@@ -376,7 +376,7 @@ function Footer({ copyEmail }) {
             <a href="#">Instagram <span style={{ opacity: .4 }}>↗</span></a>
           </div>
           <div className="col">
-            <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"[ ELSEWHERE ]"}</div>
+            <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"/ ELSEWHERE"}</div>
             <a href="#">Twitter / X <span style={{ opacity: .4 }}>↗</span></a>
             <a href="#">Read.cv <span style={{ opacity: .4 }}>↗</span></a>
             <a href="#">Resume PDF <span style={{ opacity: .4 }}>↓</span></a>
