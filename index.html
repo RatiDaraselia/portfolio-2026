@@ -88,7 +88,7 @@
     background:rgba(255,255,255,.02);cursor:default;transition:background-color .6s cubic-bezier(.4,0,.2,1),color .6s cubic-bezier(.4,0,.2,1),border-color .6s cubic-bezier(.4,0,.2,1);
     position:relative;letter-spacing:-.005em}
   .btn:hover{background:#fff;color:#000;border-color:#fff}
-  .btn .arrow{display:inline-block;transition:transform .6s cubic-bezier(.4,0,.2,1);opacity:.7;font-size:12px}
+  .btn .arrow{display:inline-flex;align-items:center;transition:transform .6s cubic-bezier(.4,0,.2,1);opacity:.7}
   .btn:hover .arrow{transform:translateX(3px);opacity:1}
   .btn-ghost{background:transparent}
   .btn-sm{padding:8px 13px;font-size:12px}
@@ -242,14 +242,16 @@
   .ident .meta .r{font-size:12.5px;color:var(--fg-3)}
 
   .foot-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;padding:24px 0 64px;border-top:1px solid var(--line)}
+  .foot-cols .col{display:flex;flex-direction:column;align-items:stretch}
   .foot-cols .col .h{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-4);margin-bottom:14px}
   .foot-cols .col a{display:flex;align-items:center;justify-content:space-between;gap:12px;
-    padding:7px 0;color:var(--fg-2);font-size:13.5px;
-    transition:color .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1)}
-  .foot-cols .col a:hover{color:var(--fg)}
+    padding:7px 12px;margin:0 -12px;color:var(--fg-2);font-size:13.5px;border-radius:999px;
+    transition:color .3s ease-out, box-shadow .3s ease-out}
+  .foot-cols .col a:hover{box-shadow:inset 0 0 0 1px #fff;color:#fff}
+  .foot-cols .col a span{font-size:10px;line-height:1;display:inline-flex;align-items:center}
   .foot-cols .col a .ic{display:inline-flex;color:var(--fg-4);
-    transition:color .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1)}
-  .foot-cols .col a:hover .ic{color:var(--fg);transform:translate(2px,-2px)}
+    transition:color .3s ease-out, transform .3s ease-out}
+  .foot-cols .col a:hover .ic{color:#fff;transform:translate(2px,-2px)}
 
   .signature{padding:40px 0 20px;position:relative;width:100%;
     display:flex;flex-direction:column;align-items:center;overflow:hidden}

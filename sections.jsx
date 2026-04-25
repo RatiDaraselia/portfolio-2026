@@ -64,10 +64,10 @@ function Hero({ layout = 'editorial', copyEmail }) {
       </p>
       <div className="cta-row">
         <button className="btn btn-solid" onClick={copyEmail}>
-          <Icon.Mail /> Get in touch <span className="arrow">→</span>
+          <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
         </button>
         <a className="btn btn-ghost btn-tg" href="https://t.me/bagrat" target="_blank" rel="noreferrer">
-          <Icon.Telegram /> Telegram <span className="arrow">↗</span>
+          <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
         </a>
       </div>
     </>;
@@ -92,10 +92,10 @@ function Hero({ layout = 'editorial', copyEmail }) {
               </p>
               <div className="cta-row">
                 <button className="btn btn-solid" onClick={copyEmail}>
-                  <Icon.Mail /> Get in touch <span className="arrow">→</span>
+                  <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
                 </button>
                 <a className="btn btn-ghost btn-tg" href="https://t.me/bagrat" target="_blank" rel="noreferrer">
-                  <Icon.Telegram /> Telegram <span className="arrow">↗</span>
+                  <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
                 </a>
               </div>
             </div>
@@ -314,10 +314,10 @@ function Benefits({ copyEmail }) {
         </div>
         <div className="reveal" style={{ display: 'flex', gap: 10, marginTop: 28, justifyContent: 'center', animationDelay: '750ms' }}>
           <button className="btn btn-solid" onClick={copyEmail}>
-            <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow">→</span>
+            <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow"><Icon.Arrow size={11}/></span>
           </button>
           <a className="btn btn-ghost btn-tg" href="https://t.me/bagrat" target="_blank" rel="noreferrer">
-            <Icon.Telegram /> Telegram <span className="arrow">↗</span>
+            <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
           </a>
         </div>
       </div>
@@ -325,14 +325,7 @@ function Benefits({ copyEmail }) {
 
 }
 
-// Footer download arrow (thin line, matches ArrowUpRight)
-function ArrowDown({ size = 12 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <path d="M8 3v9M4 8l4 4 4-4" />
-    </svg>);
 
-}
 function Footer({ copyEmail }) {
   return (
     <footer id="contact" style={{ fontFamily: "Inter" }}>
@@ -344,10 +337,10 @@ function Footer({ copyEmail }) {
             I reply to every inbound within 24 hours.</p>
           <div className="reveal" style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', animationDelay: '450ms' }}>
             <button className="btn btn-solid" onClick={copyEmail}>
-              <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow">→</span>
+              <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow"><Icon.Arrow size={11}/></span>
             </button>
             <a className="btn btn-ghost btn-tg" href="https://t.me/bagrat" target="_blank" rel="noreferrer">
-              <Icon.Telegram /> Telegram <span className="arrow">↗</span>
+              <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
             </a>
           </div>
         </div>
@@ -370,16 +363,16 @@ function Footer({ copyEmail }) {
           </div>
           <div className="col">
             <div className="h">/ SOCIALS</div>
-            <a href="#">Dribbble <span style={{ opacity: .4 }}>↗</span></a>
-            <a href="#">Behance <span style={{ opacity: .4 }}>↗</span></a>
-            <a href="#">LinkedIn <span style={{ opacity: .4 }}>↗</span></a>
-            <a href="#">Instagram <span style={{ opacity: .4 }}>↗</span></a>
+            <a href="#">Dribbble <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Behance <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">LinkedIn <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Instagram <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
           </div>
           <div className="col">
             <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"/ ELSEWHERE"}</div>
-            <a href="#">Twitter / X <span style={{ opacity: .4 }}>↗</span></a>
-            <a href="#">Read.cv <span style={{ opacity: .4 }}>↗</span></a>
-            <a href="#">Resume PDF <span style={{ opacity: .4 }}>↓</span></a>
+            <a href="#">Twitter / X <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Read.cv <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Resume PDF <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.Download size={10}/></span></a>
             <a href="mailto:ratidaraselia.ui@gmail.com" style={{ color: "rgba(255, 255, 255, 0.2)" }}>ratidaraselia.ui@gmail.com</a>
           </div>
         </div>
