@@ -80,11 +80,14 @@
   .nav.condensed{padding:4px;transform:scale(.94)}
   .nav a.nav-link{position:relative;display:inline-flex;align-items:center;gap:6px;
     padding:8px 14px;border-radius:999px;font-size:12.5px;color:var(--fg-3);
-    letter-spacing:-.005em;transition:color .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1)}
+    letter-spacing:-.005em;
+    transition:color .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1),
+      padding-left .4s cubic-bezier(.4,0,.2,1), padding-right .4s cubic-bezier(.4,0,.2,1)}
   .nav a.nav-link:hover{color:var(--fg)}
-  .nav a.nav-link.active{color:var(--fg);background:rgba(255,255,255,.06)}
-  .nav .dot{width:4px;height:4px;border-radius:999px;background:var(--fg);opacity:0;transition:opacity .6s cubic-bezier(.4,0,.2,1)}
-  .nav a.nav-link.active .dot{opacity:1}
+  .nav a.nav-link.active{color:var(--fg);background:rgba(255,255,255,.06);padding-left:10px;padding-right:16px}
+  .nav .dot{width:0;height:4px;border-radius:999px;background:var(--fg);opacity:0;overflow:hidden;
+    transition:width .4s cubic-bezier(.4,0,.2,1), opacity .4s cubic-bezier(.4,0,.2,1)}
+  .nav a.nav-link.active .dot{width:4px;opacity:1}
 
   /* Buttons */
   .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;
