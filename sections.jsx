@@ -377,16 +377,16 @@ function Footer({ copyEmail }) {
           </div>
           <div className="col">
             <div className="h">/ SOCIALS</div>
-            <a href="#">Dribbble <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">Behance <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">LinkedIn <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">Instagram <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Dribbble <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Behance <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">LinkedIn <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Instagram <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
           </div>
           <div className="col">
             <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"/ ELSEWHERE"}</div>
-            <a href="#">Twitter / X <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">Read.cv <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">Resume PDF <span style={{opacity:.4,display:'inline-flex',alignItems:'center'}}><Icon.Download size={10}/></span></a>
+            <a href="#">Twitter / X <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Read.cv <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Resume PDF <span className="ic"><Icon.Download size={10}/></span></a>
             <a href="mailto:ratidaraselia.ui@gmail.com" style={{ color: "rgba(255, 255, 255, 0.2)" }}>ratidaraselia.ui@gmail.com</a>
           </div>
         </div>

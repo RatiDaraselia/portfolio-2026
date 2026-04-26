@@ -249,11 +249,11 @@
   .foot-cols .col a{display:flex;align-items:center;justify-content:space-between;gap:12px;
     padding:7px 12px;margin:0 -12px;color:var(--fg-2);font-size:13.5px;border-radius:999px;
     transition:color .3s ease-out, box-shadow .3s ease-out}
-  .foot-cols .col a:hover{box-shadow:inset 0 0 0 1px #fff;color:#fff}
+  .foot-cols .col a:hover{box-shadow:inset 0 0 0 0.5px rgba(255,255,255,0.14);color:#fff}
   .foot-cols .col a span{font-size:10px;line-height:1;display:inline-flex;align-items:center}
-  .foot-cols .col a .ic{display:inline-flex;color:var(--fg-4);
-    transition:color .3s ease-out, transform .3s ease-out}
-  .foot-cols .col a:hover .ic{color:#fff;transform:translate(2px,-2px)}
+  .foot-cols .col a .ic{display:inline-flex;color:var(--fg-4);opacity:.4;
+    transition:color .3s ease-out, opacity .3s ease-out, transform .3s ease-out}
+  .foot-cols .col a:hover .ic{color:#fff;opacity:1;transform:translate(2px,0)}
 
   .signature{padding:40px 0 20px;position:relative;width:100%;
     display:flex;flex-direction:column;align-items:center;overflow:hidden}
