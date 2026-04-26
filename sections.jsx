@@ -370,7 +370,8 @@ const VERT = `
   attribute vec3 aSeed;
   attribute vec4 aRand;
   uniform float uTime;
-  varying float vAlpha;
+  varying vec2  vNDC;
+  varying float vRand;
 
   float hash(vec3 p) {
     p = fract(p * vec3(443.897,441.423,437.195));
@@ -389,6 +390,7 @@ const VERT = `
       u.z) * 2.0 - 1.0;
   }
 
+  // Divergence-free 3D curl — produces organic swirling flow
   vec3 curl(vec3 p) {
     const float e = 0.08;
     vec3 a = vec3(3.33,5.71,2.14), b = vec3(7.53,1.22,8.87);
@@ -402,57 +404,60 @@ const VERT = `
   }
 
   void main() {
-    float speed = 0.46 + aRand.y * 0.32;
-    float phase = fract(uTime * speed * 0.065 + aRand.x);
-    float kt = uTime * 0.12 + aRand.x * 6.2832;
+    // Continuous horizontal drift — calm tempo, slight per-particle variance
+    float driftSpeed = 0.045 + aRand.y * 0.030;
+    float boxW = 8.0;
+    float x = aSeed.x + uTime * driftSpeed;
+    x = mod(x + boxW * 0.5, boxW) - boxW * 0.5;
 
-    vec3 inner = vec3(
-      (fract(aSeed.x * 0.373 + aSeed.y * 0.619) - 0.5) * 1.5,
-      (fract(aSeed.y * 0.413 + aSeed.z * 0.711) - 0.5) * 0.9,
-      (fract(aSeed.z * 0.531 + aSeed.x * 0.293) - 0.5) * 0.7
-    );
-    // Tighter spatial scale — smaller eddies force visible ribbons faster
-    // without touching time or velocity
-    vec3 c1 = curl(inner * 0.62 + kt * 0.22) * 0.88;
-    vec3 c2 = curl(inner * 1.28 + kt * 0.44 + 2.094) * 0.40;
+    vec3 basePos = vec3(x, aSeed.y, aSeed.z);
 
-    // Harmonic attractor — pull proportional to distance, flocks particles
-    // into shared streams without aggressive vortex
-    vec3 attractor = -inner * 0.15;
+    // 3D Curl noise — two octaves, slow time evolution
+    // Particles riding the same curl current naturally trace shared contour lines
+    float kt = uTime * 0.05;
+    vec3 c1 = curl(basePos * 0.42 + vec3(kt,        kt * 0.7,  kt * 1.3))        * 0.55;
+    vec3 c2 = curl(basePos * 1.10 + vec3(kt * 1.6 + 2.1, kt * 1.4, kt * 1.9))    * 0.20;
 
-    vec3 knotPos = inner + c1 + c2 + attractor;
-    float knotSpeed = clamp(length(c1)*0.65 + length(c2)*0.35, 0.0, 1.0);
+    vec3 pos = basePos + c1 + c2;
 
-    vec3 pos; float alpha;
-
-    if (phase < 0.28) {
-      float t = smoothstep(0.0, 1.0, phase / 0.28);
-      pos = mix(aSeed, inner, t);
-      alpha = smoothstep(0.0, 0.55, t) * 0.65;
-    } else if (phase < 0.80) {
-      float kf = smoothstep(0.0, 0.12, (phase - 0.28) / 0.52);
-      pos = mix(inner, knotPos, kf);
-      alpha = (mix(0.18, 0.90, knotSpeed)) * kf + 0.32 * (1.0 - kf);
-    } else {
-      float t = smoothstep(0.0, 1.0, (phase - 0.80) / 0.20);
-      vec3 escDir = normalize(vec3(cos(aRand.z*6.2832), sin(aRand.z*6.2832), aRand.w*2.0-1.0));
-      pos = knotPos + escDir * t * 3.8;
-      alpha = 1.0 - t;
-    }
-
-    float yFade = smoothstep(-0.85, -0.15, pos.y) * (1.0 - smoothstep(0.55, 1.25, pos.y));
-    float descentFade = mix(0.72, 1.0, smoothstep(-0.10, 0.35, pos.y));
-    vAlpha = alpha * yFade * descentFade;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    vNDC  = gl_Position.xy / gl_Position.w;
+    vRand = aRand.x;
     gl_PointSize = 1.0;
   }
 `;
 
 const FRAG = `
-  varying float vAlpha;
+  uniform float uTime;
+  varying vec2  vNDC;
+  varying float vRand;
+
   void main() {
-    if (vAlpha <= 0.01) discard;
-    gl_FragColor = vec4(1.0, 1.0, 1.0, vAlpha);
+    // Angular perimeter wobble — three octaves of trig noise around the rim,
+    // drifting slowly so the boundary breathes and erodes organically
+    float angle  = atan(vNDC.y, vNDC.x);
+    float wobble = sin(angle * 3.0  + uTime * 0.10)        * 0.085
+                 + sin(angle * 5.0  + uTime * 0.07 + 2.1)  * 0.050
+                 + sin(angle * 11.0 + uTime * 0.16 + 4.3)  * 0.025;
+
+    // Per-particle perimeter offset — each particle pushes its own fade
+    // threshold in/out independently so the rim never reads as a single line
+    float perVar = sin(uTime * (0.5 + vRand * 1.2) + vRand * 9.0) * 0.11;
+
+    // Wide gradient mask — soft, eroded boundary instead of a sharp ellipse.
+    // fadeStart at ~0.40 keeps a clear bright core; fadeEnd extends past 1.0
+    // so wobble can pull the rim well past the canvas without revealing it
+    float r = length(vNDC);
+    float fadeStart = 0.40 + wobble * 0.6 + perVar * 0.4;
+    float fadeEnd   = 0.95 + wobble + perVar;
+    float mask = 1.0 - smoothstep(fadeStart, fadeEnd, r);
+
+    // Per-particle shimmer
+    float shim = 0.30 + 0.70 * (0.5 + 0.5 * sin(uTime * (0.7 + vRand * 3.2) + vRand * 6.2832));
+
+    float final = mask * shim * 0.85;
+    if (final <= 0.008) discard;
+    gl_FragColor = vec4(1.0, 1.0, 1.0, final);
   }
 `;
 
@@ -464,112 +469,106 @@ function FooterCanvas() {
     if (!canvas) return;
 
     let dispose = null;
-    let sentinel = null;
+    const THREE = window.THREE;
+    if (!THREE) return;
 
-    // Defer ALL WebGL work until footer is within 500px of the viewport
-    // Wait for layout to settle to prevent false positive intersection on load
-    const timeoutId = setTimeout(() => {
-      const target = canvas.closest('footer') || canvas;
+    const initWebGL = () => {
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
-      sentinel = new IntersectionObserver((entries) => {
-        if (!entries[0].isIntersecting) return;
-        sentinel.disconnect();
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
+      camera.position.set(0, 0, 3.4);
 
-        const THREE = window.THREE;
-        if (!THREE) return;
+      // ── 100k GPU particles with full lifecycle data ────────────────
+      const N = 100000;
+      const seeds = new Float32Array(N * 3);
+      const rands = new Float32Array(N * 4);
 
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      for (let i = 0; i < N; i++) {
+        // X uniform — horizontal drift+wrap fills it evenly across the canvas
+        seeds[i * 3]     = (Math.random() - 0.5) * 7.0;
+        // Y triangular (sum of two uniforms) — denser at center, sparser at
+        // extremes, so particles thin out organically toward top/bottom
+        seeds[i * 3 + 1] = (Math.random() + Math.random() - 1.0) * 1.8;
+        seeds[i * 3 + 2] = (Math.random() - 0.5) * 1.6;
+        rands[i * 4]     = Math.random();
+        rands[i * 4 + 1] = Math.random();
+        rands[i * 4 + 2] = Math.random();
+        rands[i * 4 + 3] = Math.random();
+      }
 
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
-        camera.position.set(0, 0, 3.4);
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
+      geo.setAttribute('aSeed',    new THREE.BufferAttribute(seeds, 3));
+      geo.setAttribute('aRand',    new THREE.BufferAttribute(rands, 4));
 
-        // ── 100k GPU particles with full lifecycle data ────────────────
-        const N = 100000;
-        const seeds = new Float32Array(N * 3);
-        const rands = new Float32Array(N * 4);
+      const mat = new THREE.ShaderMaterial({
+        vertexShader:   VERT,
+        fragmentShader: FRAG,
+        uniforms:       { uTime: { value: 0 } },
+        transparent:    true,
+        depthWrite:     false,
+        blending:       THREE.AdditiveBlending,
+      });
 
-        for (let i = 0; i < N; i++) {
-          const side = Math.random() > 0.5 ? 1 : -1;
-          seeds[i * 3]     = side * (4.2 + Math.random() * 2.0);
-          seeds[i * 3 + 1] = (Math.random() - 0.5) * 5.0;
-          seeds[i * 3 + 2] = (Math.random() - 0.5) * 2.5;
-          rands[i * 4]     = Math.random();
-          rands[i * 4 + 1] = Math.random();
-          rands[i * 4 + 2] = Math.random();
-          rands[i * 4 + 3] = Math.random();
-        }
+      const cloud = new THREE.Points(geo, mat);
+      cloud.frustumCulled = false;
+      // Anchor the dense body of the mist below the CTA buttons —
+      // upper drift can still graze the button area on its peaks
+      cloud.position.y = -0.55;
+      scene.add(cloud);
 
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
-        geo.setAttribute('aSeed',    new THREE.BufferAttribute(seeds, 3));
-        geo.setAttribute('aRand',    new THREE.BufferAttribute(rands, 4));
+      // Pre-compile shaders in background so they don't block main thread on first render
+      renderer.compile(scene, camera);
 
-        const mat = new THREE.ShaderMaterial({
-          vertexShader:   VERT,
-          fragmentShader: FRAG,
-          uniforms:       { uTime: { value: 0 } },
-          transparent:    true,
-          depthWrite:     false,
-          blending:       THREE.AdditiveBlending,
+      // ── Resize ────────────────────────────────────────────────────
+      const resize = () => {
+        const w = canvas.offsetWidth, h = canvas.offsetHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      };
+      resize();
+      const ro = new ResizeObserver(resize);
+      ro.observe(canvas);
+
+      // ── Tick ──────────────────────────────────────────────────────
+      let rafId = null, running = false, t = 0;
+      const tick = () => {
+        rafId = requestAnimationFrame(tick);
+        t += 0.008;
+        mat.uniforms.uTime.value = t;
+        renderer.render(scene, camera);
+      };
+
+      // ── Pause RAF when footer scrolls off-screen ──────────────────
+      const footer = canvas.closest('footer');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting && !running) {
+            running = true; rafId = requestAnimationFrame(tick);
+          } else if (!e.isIntersecting && running) {
+            running = false; cancelAnimationFrame(rafId);
+          }
         });
+      }, { threshold: 0.05 });
+      if (footer) io.observe(footer);
 
-        const cloud = new THREE.Points(geo, mat);
-        cloud.frustumCulled = false;
-        cloud.scale.set(1.0, 0.48, 1.0);
-        cloud.position.y = 0.40;
-        scene.add(cloud);
+      dispose = () => {
+        cancelAnimationFrame(rafId);
+        io.disconnect(); ro.disconnect();
+        renderer.dispose(); geo.dispose(); mat.dispose();
+      };
+    };
 
-        // Pre-compile shaders so they don't block the main thread on the first render frame
-        renderer.compile(scene, camera);
-
-        // ── Resize ────────────────────────────────────────────────────
-        const resize = () => {
-          const w = canvas.offsetWidth, h = canvas.offsetHeight;
-          renderer.setSize(w, h, false);
-          camera.aspect = w / h;
-          camera.updateProjectionMatrix();
-        };
-        resize();
-        const ro = new ResizeObserver(resize);
-        ro.observe(canvas);
-
-        // ── Tick ──────────────────────────────────────────────────────
-        let rafId = null, running = false, t = 0;
-        const tick = () => {
-          rafId = requestAnimationFrame(tick);
-          t += 0.008;
-          mat.uniforms.uTime.value = t;
-          renderer.render(scene, camera);
-        };
-
-        // ── Pause RAF when footer scrolls off-screen ──────────────────
-        const footer = canvas.closest('footer');
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach(e => {
-            if (e.isIntersecting && !running) {
-              running = true; rafId = requestAnimationFrame(tick);
-            } else if (!e.isIntersecting && running) {
-              running = false; cancelAnimationFrame(rafId);
-            }
-          });
-        }, { threshold: 0.05 });
-        if (footer) io.observe(footer);
-
-        dispose = () => {
-          cancelAnimationFrame(rafId);
-          io.disconnect(); ro.disconnect();
-          renderer.dispose(); geo.dispose(); mat.dispose();
-        };
-      }, { rootMargin: '500px 0px', threshold: 0 });
-
-      sentinel.observe(target);
-    }, 150);
+    const requestIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+    const cancelIdle = window.cancelIdleCallback || clearTimeout;
+    
+    const idleId = requestIdle(initWebGL);
 
     return () => {
-      clearTimeout(timeoutId);
-      if (sentinel) sentinel.disconnect();
+      cancelIdle(idleId);
       if (dispose) dispose();
     };
   }, []);
@@ -583,14 +582,14 @@ function Footer() {
     <>
     {resumeOpen && <ResumeModal onClose={() => setResumeOpen(false)} />}
     <footer id="contact">
-      <FooterCanvas />
       <div className="wrap">
         <div className="footer-top">
           <div className="eyebrow reveal" style={{ marginBottom: 18 }}>[ 05 — Get in Touch ]</div>
           <h2 className="reveal" style={{ animationDelay: '150ms' }}>Let's get in touch.</h2>
           <p className="reveal" style={{ animationDelay: '300ms' }}>Currently taking on a small number of Q3 engagements.
             I reply to every inbound within 24 hours.</p>
-          <div className="reveal" style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', animationDelay: '450ms' }}>
+          <div className="footer-cta-zone reveal" style={{ animationDelay: '450ms' }}>
+            <div className="cta-canvas-wrap" aria-hidden="true"><FooterCanvas /></div>
             <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
               <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow"><Icon.Arrow size={11}/></span>
             </a>
