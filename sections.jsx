@@ -460,91 +460,117 @@ function FooterCanvas() {
   const ref = React.useRef(null);
 
   React.useEffect(() => {
-    const THREE = window.THREE;
-    if (!THREE || !ref.current) return;
-
     const canvas = ref.current;
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    if (!canvas) return;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
-    camera.position.set(0, 0, 3.4);
+    let dispose = null;
+    let sentinel = null;
 
-    // ── 100k GPU particles with full lifecycle data ────────────────
-    const N = 100000;
-    const seeds = new Float32Array(N * 3);
-    const rands = new Float32Array(N * 4);
+    // Defer ALL WebGL work until footer is within 500px of the viewport
+    // Wait for layout to settle to prevent false positive intersection on load
+    const timeoutId = setTimeout(() => {
+      const target = canvas.closest('footer') || canvas;
 
-    for (let i = 0; i < N; i++) {
-      // Spawn positions: primarily at left/right edges
-      const side = Math.random() > 0.5 ? 1 : -1;
-      seeds[i * 3]     = side * (4.2 + Math.random() * 2.0);
-      seeds[i * 3 + 1] = (Math.random() - 0.5) * 5.0;
-      seeds[i * 3 + 2] = (Math.random() - 0.5) * 2.5;
-      rands[i * 4]     = Math.random(); // phase offset
-      rands[i * 4 + 1] = Math.random(); // speed multiplier
-      rands[i * 4 + 2] = Math.random(); // escape theta
-      rands[i * 4 + 3] = Math.random(); // escape z direction
-    }
+      sentinel = new IntersectionObserver((entries) => {
+        if (!entries[0].isIntersecting) return;
+        sentinel.disconnect();
 
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
-    geo.setAttribute('aSeed',    new THREE.BufferAttribute(seeds, 3));
-    geo.setAttribute('aRand',    new THREE.BufferAttribute(rands, 4));
+        const THREE = window.THREE;
+        if (!THREE) return;
 
-    const mat = new THREE.ShaderMaterial({
-      vertexShader:   VERT,
-      fragmentShader: FRAG,
-      uniforms:       { uTime: { value: 0 } },
-      transparent:    true,
-      depthWrite:     false,
-      blending:       THREE.AdditiveBlending,
-    });
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
-    const cloud = new THREE.Points(geo, mat);
-    cloud.frustumCulled = false;
-    cloud.scale.set(1.0, 0.48, 1.0);
-    cloud.position.y = 0.40;
-    scene.add(cloud);
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
+        camera.position.set(0, 0, 3.4);
 
-    // ── Resize ────────────────────────────────────────────────────
-    const resize = () => {
-      const w = canvas.offsetWidth, h = canvas.offsetHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-    };
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
+        // ── 100k GPU particles with full lifecycle data ────────────────
+        const N = 100000;
+        const seeds = new Float32Array(N * 3);
+        const rands = new Float32Array(N * 4);
 
-    // ── Tick ──────────────────────────────────────────────────────
-    let rafId = null, running = false, t = 0;
-    const tick = () => {
-      rafId = requestAnimationFrame(tick);
-      t += 0.008;
-      mat.uniforms.uTime.value = t;
-      renderer.render(scene, camera);
-    };
-
-    // ── IntersectionObserver — pause when off-screen ──────────────
-    const footer = canvas.closest('footer');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting && !running) {
-          running = true; rafId = requestAnimationFrame(tick);
-        } else if (!e.isIntersecting && running) {
-          running = false; cancelAnimationFrame(rafId);
+        for (let i = 0; i < N; i++) {
+          const side = Math.random() > 0.5 ? 1 : -1;
+          seeds[i * 3]     = side * (4.2 + Math.random() * 2.0);
+          seeds[i * 3 + 1] = (Math.random() - 0.5) * 5.0;
+          seeds[i * 3 + 2] = (Math.random() - 0.5) * 2.5;
+          rands[i * 4]     = Math.random();
+          rands[i * 4 + 1] = Math.random();
+          rands[i * 4 + 2] = Math.random();
+          rands[i * 4 + 3] = Math.random();
         }
-      });
-    }, { threshold: 0.05 });
-    if (footer) io.observe(footer);
+
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
+        geo.setAttribute('aSeed',    new THREE.BufferAttribute(seeds, 3));
+        geo.setAttribute('aRand',    new THREE.BufferAttribute(rands, 4));
+
+        const mat = new THREE.ShaderMaterial({
+          vertexShader:   VERT,
+          fragmentShader: FRAG,
+          uniforms:       { uTime: { value: 0 } },
+          transparent:    true,
+          depthWrite:     false,
+          blending:       THREE.AdditiveBlending,
+        });
+
+        const cloud = new THREE.Points(geo, mat);
+        cloud.frustumCulled = false;
+        cloud.scale.set(1.0, 0.48, 1.0);
+        cloud.position.y = 0.40;
+        scene.add(cloud);
+
+        // Pre-compile shaders so they don't block the main thread on the first render frame
+        renderer.compile(scene, camera);
+
+        // ── Resize ────────────────────────────────────────────────────
+        const resize = () => {
+          const w = canvas.offsetWidth, h = canvas.offsetHeight;
+          renderer.setSize(w, h, false);
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        };
+        resize();
+        const ro = new ResizeObserver(resize);
+        ro.observe(canvas);
+
+        // ── Tick ──────────────────────────────────────────────────────
+        let rafId = null, running = false, t = 0;
+        const tick = () => {
+          rafId = requestAnimationFrame(tick);
+          t += 0.008;
+          mat.uniforms.uTime.value = t;
+          renderer.render(scene, camera);
+        };
+
+        // ── Pause RAF when footer scrolls off-screen ──────────────────
+        const footer = canvas.closest('footer');
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting && !running) {
+              running = true; rafId = requestAnimationFrame(tick);
+            } else if (!e.isIntersecting && running) {
+              running = false; cancelAnimationFrame(rafId);
+            }
+          });
+        }, { threshold: 0.05 });
+        if (footer) io.observe(footer);
+
+        dispose = () => {
+          cancelAnimationFrame(rafId);
+          io.disconnect(); ro.disconnect();
+          renderer.dispose(); geo.dispose(); mat.dispose();
+        };
+      }, { rootMargin: '500px 0px', threshold: 0 });
+
+      sentinel.observe(target);
+    }, 150);
 
     return () => {
-      cancelAnimationFrame(rafId);
-      io.disconnect(); ro.disconnect();
-      renderer.dispose(); geo.dispose(); mat.dispose();
+      clearTimeout(timeoutId);
+      if (sentinel) sentinel.disconnect();
+      if (dispose) dispose();
     };
   }, []);
 
