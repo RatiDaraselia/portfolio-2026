@@ -340,8 +340,36 @@ function Benefits({ copyEmail }) {
 }
 
 
-function Footer({ copyEmail }) {
+function ResumeModal({ onClose }) {
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
   return (
+    <div className="resume-modal-backdrop" onClick={onClose}>
+      <div className="resume-modal-inner" onClick={(e) => e.stopPropagation()}>
+        <div className="resume-modal-frame">
+          <iframe src="assets/CV_EN.pdf" title="Resume Preview" />
+        </div>
+        <div className="resume-modal-hint">
+          Collapse the Document — <kbd className="resume-kbd">ESC</kbd>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Footer({ copyEmail }) {
+  const [resumeOpen, setResumeOpen] = React.useState(false);
+  return (
+    <>
+    {resumeOpen && <ResumeModal onClose={() => setResumeOpen(false)} />}
     <footer id="contact" style={{ fontFamily: "Inter" }}>
       <div className="wrap">
         <div className="footer-top">
@@ -386,7 +414,7 @@ function Footer({ copyEmail }) {
             <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"/ ELSEWHERE"}</div>
             <a href="#">Twitter / X <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
             <a href="#">Read.cv <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">Resume PDF <span className="ic"><Icon.Download size={10}/></span></a>
+            <a href="#" onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}>Resume PDF <span className="ic"><Icon.Download size={10}/></span></a>
             <a href="mailto:ratidaraselia.ui@gmail.com" style={{ color: "rgba(255, 255, 255, 0.2)" }}>ratidaraselia.ui@gmail.com</a>
           </div>
         </div>
@@ -405,8 +433,9 @@ function Footer({ copyEmail }) {
           <span>Built from first principles · v2.4</span>
         </div>
       </div>
-    </footer>);
-
+    </footer>
+    </>
+  );
 }
 
 Object.assign(window, { Nav, Hero, Marquee, UtilityRow, Projects, Career, Benefits, Footer });
