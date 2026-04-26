@@ -199,10 +199,9 @@ function ProjectThumb({ project, variant }) {
 
 function ProjectCard({ p, variant, revealDelay = 0 }) {
   return (
-    <article className="card reveal"
-      style={{ animationDelay: `${revealDelay}ms`, ...(p.wide && { gridColumn: '1 / -1' }) }}>
-      <a href={p.link} className="thumb" aria-label={`${p.name}, open external`}
-        style={p.wide ? { aspectRatio: '40/21' } : undefined}>
+    <article className={`card reveal${p.wide ? ' card-wide' : ''}`}
+      style={{ animationDelay: `${revealDelay}ms` }}>
+      <a href={p.link} className="thumb" aria-label={`${p.name}, open external`}>
         <ProjectThumb project={p} variant={variant} />
         <span className="thumb-label">View case · {p.tag}</span>
         <span className="ext" aria-hidden><Icon.ArrowUpRight size={12} /></span>

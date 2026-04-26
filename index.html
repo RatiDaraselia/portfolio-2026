@@ -170,6 +170,8 @@
   .project-grid{display:grid;grid-template-columns:1fr 1fr;gap:51px 28px}
   .project-grid[data-density="loose"]{gap:77px 28px}
   .project-grid[data-density="tight"]{gap:27px 18px}
+  .card.card-wide{grid-column:1 / -1}
+  .card.card-wide .thumb{aspect-ratio:40/21}
 
   .card{position:relative;display:flex;flex-direction:column;gap:14px;cursor:default}
   .card .thumb{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;
@@ -288,6 +290,8 @@
     .list .item{grid-template-columns:1fr 1fr;gap:6px 16px}
     .list .item .type{display:none}
     .nav a.nav-link{padding:8px 11px;font-size:12px}
+    .card.card-wide{grid-column:auto}
+    .card.card-wide .thumb{aspect-ratio:4/3}
   }
 
   /* Hero layout variants */
