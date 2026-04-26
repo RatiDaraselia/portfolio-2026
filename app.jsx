@@ -35,6 +35,7 @@ function App() {
   // Custom blend-mode circle cursor
   React.useEffect(() => {
     const dot = document.getElementById('cursor');
+    const lensImg = document.getElementById('cursor-lens-img');
     const html = document.documentElement;
     if (!dot) return;
     if (!t.spotlight) {
@@ -48,11 +49,20 @@ function App() {
     let curX = 0, curY = 0;
     let rafId = null;
     let seenFirstMove = false;
+    let currentThumb = null;
+    const MAG = 2, LW = 100, LH = 50;
 
     const tick = () => {
       curX += (targetX - curX) * 0.25;
       curY += (targetY - curY) * 0.25;
       dot.style.transform = `translate3d(${curX}px,${curY}px,0) translate(-50%,-50%)`;
+      if (currentThumb && lensImg) {
+        const r = currentThumb.getBoundingClientRect();
+        lensImg.style.width  = (r.width  * MAG) + 'px';
+        lensImg.style.height = (r.height * MAG) + 'px';
+        lensImg.style.left   = (LW / 2 - (curX - r.left) * MAG) + 'px';
+        lensImg.style.top    = (LH / 2 - (curY - r.top)  * MAG) + 'px';
+      }
       rafId = requestAnimationFrame(tick);
     };
 
@@ -73,7 +83,15 @@ function App() {
     const hoverSel = 'a, button, .nav-link, .btn, [role="button"]';
     const clickSel = 'a, button, .btn, [role="button"]';
     const tgSel = '.btn-tg';
+    const thumbSel = '.card .thumb';
     const onOver = (e) => {
+      if (e.target.closest && e.target.closest(thumbSel)) {
+        const thumb = e.target.closest(thumbSel);
+        const img = thumb.querySelector('img');
+        if (img && lensImg) { lensImg.src = img.src; }
+        currentThumb = img ? thumb : null;
+        if (currentThumb) { dot.classList.add('lens'); return; }
+      }
       if (e.target.closest && e.target.closest('.card')) return;
       const isClick = e.target.closest && e.target.closest(clickSel);
       if (e.target.closest && e.target.closest(hoverSel) && !isClick) dot.classList.add('hover');
@@ -81,6 +99,15 @@ function App() {
       if (e.target.closest && e.target.closest(tgSel)) dot.classList.add('on-tg');
     };
     const onOut  = (e) => {
+      if (e.target.closest && e.target.closest(thumbSel)) {
+        const stillInThumb = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(thumbSel);
+        if (!stillInThumb) {
+          dot.classList.remove('lens');
+          currentThumb = null;
+          if (lensImg) lensImg.src = '';
+        }
+        return;
+      }
       if (e.target.closest && e.target.closest('.card')) return;
       if (e.target.closest && e.target.closest(hoverSel)) dot.classList.remove('hover');
       if (e.target.closest && e.target.closest(clickSel)) dot.classList.remove('hide');
@@ -107,7 +134,9 @@ function App() {
       document.removeEventListener('mouseleave', onLeave);
       document.removeEventListener('mouseenter', onEnter);
       html.classList.remove('has-custom-cursor');
-      dot.classList.remove('ready', 'hover', 'press', 'on-tg', 'hide');
+      dot.classList.remove('ready', 'hover', 'press', 'on-tg', 'hide', 'lens');
+      currentThumb = null;
+      if (lensImg) lensImg.src = '';
     };
   }, [t.spotlight]);
 
