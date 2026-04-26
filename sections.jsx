@@ -366,12 +366,198 @@ function ResumeModal({ onClose }) {
   );
 }
 
+const VERT = `
+  attribute vec3 aSeed;
+  attribute vec4 aRand;
+  uniform float uTime;
+  varying float vAlpha;
+
+  float hash(vec3 p) {
+    p = fract(p * vec3(443.897,441.423,437.195));
+    p += dot(p, p.yzx + 19.19);
+    return fract((p.x + p.y) * p.z);
+  }
+
+  float vnoise(vec3 p) {
+    vec3 i = floor(p), f = fract(p);
+    vec3 u = f*f*f*(f*(f*6.0-15.0)+10.0);
+    return mix(
+      mix(mix(hash(i),            hash(i+vec3(1,0,0)),u.x),
+          mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),u.x),u.y),
+      mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),u.x),
+          mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),u.x),u.y),
+      u.z) * 2.0 - 1.0;
+  }
+
+  vec3 curl(vec3 p) {
+    const float e = 0.08;
+    vec3 a = vec3(3.33,5.71,2.14), b = vec3(7.53,1.22,8.87);
+    float cx = (vnoise(p+vec3(0,e,0)+b)-vnoise(p-vec3(0,e,0)+b))
+              -(vnoise(p+vec3(0,0,e)+a)-vnoise(p-vec3(0,0,e)+a));
+    float cy = (vnoise(p+vec3(0,0,e))  -vnoise(p-vec3(0,0,e)))
+              -(vnoise(p+vec3(e,0,0)+b)-vnoise(p-vec3(e,0,0)+b));
+    float cz = (vnoise(p+vec3(e,0,0)+a)-vnoise(p-vec3(e,0,0)+a))
+              -(vnoise(p+vec3(0,e,0))  -vnoise(p-vec3(0,e,0)));
+    return vec3(cx,cy,cz)/(2.0*e);
+  }
+
+  void main() {
+    // Per-particle lifecycle: phase 0→1, continuously looping
+    float speed = 0.46 + aRand.y * 0.32;
+    float phase = fract(uTime * speed * 0.065 + aRand.x);
+
+    // Deterministic center zone — maps any edge seed to a small central region
+    vec3 inner = vec3(
+      (fract(aSeed.x * 0.373 + aSeed.y * 0.619) - 0.5) * 1.5,
+      (fract(aSeed.y * 0.413 + aSeed.z * 0.711) - 0.5) * 0.9,
+      (fract(aSeed.z * 0.531 + aSeed.x * 0.293) - 0.5) * 0.7
+    );
+
+    // Curl knot — 2 octaves, always computed
+    float kt = uTime * 0.12 + aRand.x * 6.2832;
+    vec3 c1 = curl(inner * 0.38 + kt * 0.22) * 1.0;
+    vec3 c2 = curl(inner * 0.80 + kt * 0.44 + 2.094) * 0.46;
+    vec3 knotPos = inner + c1 + c2;
+    float knotSpeed = clamp(length(c1)*0.65 + length(c2)*0.35, 0.0, 1.0);
+
+    vec3 pos; float alpha;
+
+    if (phase < 0.28) {
+      // Fly in from edge → inner center
+      float t = smoothstep(0.0, 1.0, phase / 0.28);
+      pos = mix(aSeed, inner, t);
+      alpha = smoothstep(0.0, 0.55, t) * 0.65;
+    } else if (phase < 0.80) {
+      // Settle into and live inside the knot
+      float kf = smoothstep(0.0, 0.12, (phase - 0.28) / 0.52);
+      pos = mix(inner, knotPos, kf);
+      alpha = (mix(0.18, 0.90, knotSpeed)) * kf + 0.32 * (1.0 - kf);
+    } else {
+      // Escape outward and fade
+      float t = smoothstep(0.0, 1.0, (phase - 0.80) / 0.20);
+      vec3 escDir = normalize(vec3(cos(aRand.z*6.2832), sin(aRand.z*6.2832), aRand.w*2.0-1.0));
+      pos = knotPos + escDir * t * 3.8;
+      alpha = 1.0 - t;
+    }
+
+    float yFade = smoothstep(-0.85, -0.15, pos.y) * (1.0 - smoothstep(0.55, 1.25, pos.y));
+    float descentFade = mix(0.72, 1.0, smoothstep(-0.10, 0.35, pos.y));
+    vAlpha = alpha * yFade * descentFade;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    gl_PointSize = 1.0;
+  }
+`;
+
+const FRAG = `
+  varying float vAlpha;
+  void main() {
+    if (vAlpha <= 0.01) discard;
+    gl_FragColor = vec4(1.0, 1.0, 1.0, vAlpha);
+  }
+`;
+
+function FooterCanvas() {
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const THREE = window.THREE;
+    if (!THREE || !ref.current) return;
+
+    const canvas = ref.current;
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
+    camera.position.set(0, 0, 3.4);
+
+    // ── 100k GPU particles with full lifecycle data ────────────────
+    const N = 100000;
+    const seeds = new Float32Array(N * 3);
+    const rands = new Float32Array(N * 4);
+
+    for (let i = 0; i < N; i++) {
+      // Spawn positions: primarily at left/right edges
+      const side = Math.random() > 0.5 ? 1 : -1;
+      seeds[i * 3]     = side * (4.2 + Math.random() * 2.0);
+      seeds[i * 3 + 1] = (Math.random() - 0.5) * 5.0;
+      seeds[i * 3 + 2] = (Math.random() - 0.5) * 2.5;
+      rands[i * 4]     = Math.random(); // phase offset
+      rands[i * 4 + 1] = Math.random(); // speed multiplier
+      rands[i * 4 + 2] = Math.random(); // escape theta
+      rands[i * 4 + 3] = Math.random(); // escape z direction
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
+    geo.setAttribute('aSeed',    new THREE.BufferAttribute(seeds, 3));
+    geo.setAttribute('aRand',    new THREE.BufferAttribute(rands, 4));
+
+    const mat = new THREE.ShaderMaterial({
+      vertexShader:   VERT,
+      fragmentShader: FRAG,
+      uniforms:       { uTime: { value: 0 } },
+      transparent:    true,
+      depthWrite:     false,
+      blending:       THREE.AdditiveBlending,
+    });
+
+    const cloud = new THREE.Points(geo, mat);
+    cloud.frustumCulled = false;
+    cloud.scale.set(1.0, 0.48, 1.0);
+    cloud.position.y = 0.40;
+    scene.add(cloud);
+
+    // ── Resize ────────────────────────────────────────────────────
+    const resize = () => {
+      const w = canvas.offsetWidth, h = canvas.offsetHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+
+    // ── Tick ──────────────────────────────────────────────────────
+    let rafId = null, running = false, t = 0;
+    const tick = () => {
+      rafId = requestAnimationFrame(tick);
+      t += 0.008;
+      mat.uniforms.uTime.value = t;
+      renderer.render(scene, camera);
+    };
+
+    // ── IntersectionObserver — pause when off-screen ──────────────
+    const footer = canvas.closest('footer');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !running) {
+          running = true; rafId = requestAnimationFrame(tick);
+        } else if (!e.isIntersecting && running) {
+          running = false; cancelAnimationFrame(rafId);
+        }
+      });
+    }, { threshold: 0.05 });
+    if (footer) io.observe(footer);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      io.disconnect(); ro.disconnect();
+      renderer.dispose(); geo.dispose(); mat.dispose();
+    };
+  }, []);
+
+  return <canvas ref={ref} className="footer-canvas" aria-hidden="true" />;
+}
+
 function Footer() {
   const [resumeOpen, setResumeOpen] = React.useState(false);
   return (
     <>
     {resumeOpen && <ResumeModal onClose={() => setResumeOpen(false)} />}
     <footer id="contact" style={{ fontFamily: "Inter" }}>
+      <FooterCanvas />
       <div className="wrap">
         <div className="footer-top">
           <div className="eyebrow reveal" style={{ marginBottom: 18 }}>[ 05 — Get in Touch ]</div>
