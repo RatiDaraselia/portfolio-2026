@@ -402,38 +402,38 @@ const VERT = `
   }
 
   void main() {
-    // Per-particle lifecycle: phase 0→1, continuously looping
     float speed = 0.46 + aRand.y * 0.32;
     float phase = fract(uTime * speed * 0.065 + aRand.x);
+    float kt = uTime * 0.12 + aRand.x * 6.2832;
 
-    // Deterministic center zone — maps any edge seed to a small central region
     vec3 inner = vec3(
       (fract(aSeed.x * 0.373 + aSeed.y * 0.619) - 0.5) * 1.5,
       (fract(aSeed.y * 0.413 + aSeed.z * 0.711) - 0.5) * 0.9,
       (fract(aSeed.z * 0.531 + aSeed.x * 0.293) - 0.5) * 0.7
     );
+    // Tighter spatial scale — smaller eddies force visible ribbons faster
+    // without touching time or velocity
+    vec3 c1 = curl(inner * 0.62 + kt * 0.22) * 0.88;
+    vec3 c2 = curl(inner * 1.28 + kt * 0.44 + 2.094) * 0.40;
 
-    // Curl knot — 2 octaves, always computed
-    float kt = uTime * 0.12 + aRand.x * 6.2832;
-    vec3 c1 = curl(inner * 0.38 + kt * 0.22) * 1.0;
-    vec3 c2 = curl(inner * 0.80 + kt * 0.44 + 2.094) * 0.46;
-    vec3 knotPos = inner + c1 + c2;
+    // Harmonic attractor — pull proportional to distance, flocks particles
+    // into shared streams without aggressive vortex
+    vec3 attractor = -inner * 0.15;
+
+    vec3 knotPos = inner + c1 + c2 + attractor;
     float knotSpeed = clamp(length(c1)*0.65 + length(c2)*0.35, 0.0, 1.0);
 
     vec3 pos; float alpha;
 
     if (phase < 0.28) {
-      // Fly in from edge → inner center
       float t = smoothstep(0.0, 1.0, phase / 0.28);
       pos = mix(aSeed, inner, t);
       alpha = smoothstep(0.0, 0.55, t) * 0.65;
     } else if (phase < 0.80) {
-      // Settle into and live inside the knot
       float kf = smoothstep(0.0, 0.12, (phase - 0.28) / 0.52);
       pos = mix(inner, knotPos, kf);
       alpha = (mix(0.18, 0.90, knotSpeed)) * kf + 0.32 * (1.0 - kf);
     } else {
-      // Escape outward and fade
       float t = smoothstep(0.0, 1.0, (phase - 0.80) / 0.20);
       vec3 escDir = normalize(vec3(cos(aRand.z*6.2832), sin(aRand.z*6.2832), aRand.w*2.0-1.0));
       pos = knotPos + escDir * t * 3.8;
