@@ -401,6 +401,8 @@ function Footer() {
             <a href="#about">About</a>
             <a href="#portfolio">Portfolio</a>
             <a href="#career">Career</a>
+            <a href="#path">Path</a>
+            <a href="#why-me">Why me</a>
             <a href="#contact">Contact</a>
           </div>
           <div className="col">
@@ -409,13 +411,12 @@ function Footer() {
             <a href="#">Behance <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
             <a href="#">LinkedIn <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
             <a href="#">Instagram <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="#">Twitter / X <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
           </div>
           <div className="col">
             <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"/ ELSEWHERE"}</div>
-            <a href="#">Twitter / X <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
             <a href="#">Read.cv <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
             <a href="#" onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}>Resume PDF <span className="ic"><Icon.Download size={10}/></span></a>
-            <a href="mailto:ratidaraselia.ui@gmail.com" style={{ color: "rgba(255, 255, 255, 0.2)" }}>ratidaraselia.ui@gmail.com</a>
           </div>
         </div>
       </div>
