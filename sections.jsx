@@ -1,3 +1,12 @@
+function DiagArrow({ size = 11 }) {
+  return (
+    <span className="diag-arrow">
+      <span className="da-out"><Icon.ArrowUpRight size={size} /></span>
+      <span className="da-in"><Icon.ArrowUpRight size={size} /></span>
+    </span>
+  );
+}
+
 // ─── Nav ───────────────────────────────────────────────────────────
 function Nav({ active, onNav }) {
   const [cond, setCond] = React.useState(false);
@@ -67,7 +76,7 @@ function Hero({ layout = 'editorial' }) {
           <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
         </a>
         <a className="btn btn-ghost btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
-          <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
+          <Icon.Telegram /> Telegram <DiagArrow size={11} />
         </a>
       </div>
     </>;
@@ -95,7 +104,7 @@ function Hero({ layout = 'editorial' }) {
                   <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
                 </a>
                 <a className="btn btn-ghost btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
-                  <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
+                  <Icon.Telegram /> Telegram <DiagArrow size={11} />
                 </a>
               </div>
             </div>
@@ -374,7 +383,7 @@ function Footer() {
               <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow"><Icon.Arrow size={11}/></span>
             </a>
             <a className="btn btn-ghost btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
-              <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
+              <Icon.Telegram /> Telegram <DiagArrow size={11} />
             </a>
           </div>
         </div>
@@ -399,15 +408,15 @@ function Footer() {
           </div>
           <div className="col">
             <div className="h">/ SOCIALS</div>
-            <a href="https://dribbble.com/Ratidaraselia" target="_blank" rel="noopener noreferrer">Dribbble <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="https://www.behance.net/ratidaraselia" target="_blank" rel="noopener noreferrer">Behance <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="https://www.linkedin.com/in/rati-daraselia-7b9587214/" target="_blank" rel="noopener noreferrer">LinkedIn <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="https://www.instagram.com/euhemerus.studio/" target="_blank" rel="noopener noreferrer">Instagram <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="https://x.com/Rati538066" target="_blank" rel="noopener noreferrer">Twitter / X <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="https://dribbble.com/Ratidaraselia" target="_blank" rel="noopener noreferrer">Dribbble <span className="ic"><DiagArrow size={10} /></span></a>
+            <a href="https://www.behance.net/ratidaraselia" target="_blank" rel="noopener noreferrer">Behance <span className="ic"><DiagArrow size={10} /></span></a>
+            <a href="https://www.linkedin.com/in/rati-daraselia-7b9587214/" target="_blank" rel="noopener noreferrer">LinkedIn <span className="ic"><DiagArrow size={10} /></span></a>
+            <a href="https://www.instagram.com/euhemerus.studio/" target="_blank" rel="noopener noreferrer">Instagram <span className="ic"><DiagArrow size={10} /></span></a>
+            <a href="https://x.com/Rati538066" target="_blank" rel="noopener noreferrer">Twitter / X <span className="ic"><DiagArrow size={10} /></span></a>
           </div>
           <div className="col">
             <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"/ ELSEWHERE"}</div>
-            <a href="https://read.cv/" target="_blank" rel="noopener noreferrer">Read.cv <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="https://read.cv/" target="_blank" rel="noopener noreferrer">Read.cv <span className="ic"><DiagArrow size={10} /></span></a>
             <a href="#" onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}>Resume PDF <span className="ic"><Icon.Download size={10}/></span></a>
           </div>
         </div>

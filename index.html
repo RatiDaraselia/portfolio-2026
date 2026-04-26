@@ -92,18 +92,25 @@
   /* Buttons */
   .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;
     border:.5px solid var(--line-2);border-radius:999px;font-size:13px;color:var(--fg);
-    background:rgba(255,255,255,.02);cursor:default;transition:background-color .6s cubic-bezier(.4,0,.2,1),color .6s cubic-bezier(.4,0,.2,1),border-color .6s cubic-bezier(.4,0,.2,1);
+    background:rgba(255,255,255,.02);cursor:default;
+    transition:background-color .3s ease-out,color .3s ease-out,border-color .3s ease-out,transform .3s ease-out,box-shadow .3s ease-out;
     position:relative;letter-spacing:-.005em}
   .btn:hover{background:#fff;color:#000;border-color:#fff}
-  .btn .arrow{display:inline-flex;align-items:center;transition:transform .6s cubic-bezier(.4,0,.2,1);opacity:.7}
-  .btn:hover .arrow{transform:translateX(3px);opacity:1}
+  .btn .arrow{display:inline-flex;align-items:center;opacity:.7;transition:opacity .3s ease-out}
+  .btn:hover .arrow{opacity:1}
+  /* Diagonal arrow swap */
+  .diag-arrow{position:relative;display:inline-flex;overflow:hidden}
+  .diag-arrow .da-out,.diag-arrow .da-in{display:inline-flex;transition:transform .3s ease-out,opacity .3s ease-out}
+  .diag-arrow .da-in{position:absolute;inset:0;transform:translate(-110%,110%);opacity:0}
+  a:hover .diag-arrow .da-out,button:hover .diag-arrow .da-out{transform:translate(110%,-110%);opacity:0}
+  a:hover .diag-arrow .da-in,button:hover .diag-arrow .da-in{transform:translate(0,0);opacity:1}
   .btn-ghost{background:transparent}
   .btn-sm{padding:8px 13px;font-size:12px}
-  /* Solid white variant (for Email CTAs) */
+  /* Solid white variant — spatial lift on hover */
   .btn-solid{background:#fff;color:#000;border-color:#fff}
-  .btn-solid:hover{background:#fff;color:#000;border-color:#fff}
-  /* Telegram variant */
-  .btn-tg:hover{background:#0088cc;color:#fff;border-color:#0088cc}
+  .btn-solid:hover{background:#fff;color:#000;border-color:#fff;transform:scale(1.02);box-shadow:0 4px 24px rgba(255,255,255,.15)}
+  /* Telegram variant — frosted fill, monochromatic */
+  .btn-tg:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3)}
   .btn-tg:hover .arrow{color:#fff}
 
   /* Hero */
@@ -260,7 +267,7 @@
   .foot-cols .col a span{font-size:10px;line-height:1;display:inline-flex;align-items:center}
   .foot-cols .col a .ic{display:inline-flex;color:var(--fg-4);opacity:.4;
     transition:color .3s ease-out, opacity .3s ease-out, transform .3s ease-out}
-  .foot-cols .col a:hover .ic{color:#fff;opacity:1;transform:translate(2px,0)}
+  .foot-cols .col a:hover .ic{color:#fff;opacity:1}
 
   .signature{padding:40px 0 24px;position:relative;width:100%;
     display:flex;flex-direction:column;align-items:center;overflow:hidden}
