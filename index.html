@@ -318,11 +318,10 @@
     background:rgba(0,0,0,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
     animation:modalIn .25s cubic-bezier(.4,0,.2,1)}
   @keyframes modalIn{from{opacity:0}to{opacity:1}}
-  .resume-modal-inner{display:flex;flex-direction:column;align-items:center;gap:16px;
-    width:min(680px,92vw);max-height:92vh}
-  .resume-modal-frame{width:100%;flex:1 1 auto;min-height:0;border-radius:16px;overflow:hidden;
-    box-shadow:0 40px 100px rgba(0,0,0,.6)}
-  .resume-modal-frame iframe{width:100%;height:76vh;border:none;display:block;border-radius:16px}
+  .resume-modal-inner{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .resume-modal-frame{height:85vh;aspect-ratio:210/297;border-radius:16px;overflow:hidden;
+    box-shadow:0 40px 100px rgba(0,0,0,.6);flex-shrink:0}
+  .resume-modal-frame iframe{width:100%;height:100%;border:none;display:block}
   .resume-modal-hint{font-size:11.5px;font-family:var(--sans);letter-spacing:.01em;
     color:rgba(255,255,255,.28);display:flex;align-items:center;gap:6px;flex-shrink:0}
   .resume-kbd{display:inline-flex;align-items:center;justify-content:center;
