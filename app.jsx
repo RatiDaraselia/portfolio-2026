@@ -11,8 +11,6 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [active, setActive] = React.useState('about');
-  const [toast, setToast] = React.useState(null);
-
   // Smooth scroll on nav click
   const onNav = (id) => {
     const el = document.getElementById(id);
@@ -155,37 +153,20 @@ function App() {
     return () => io.disconnect();
   }, []);
 
-  const copyEmail = async () => {
-    const email = 'ratidaraselia.ui@gmail.com';
-    try { await navigator.clipboard.writeText(email); }
-    catch (e) {
-      const ta = document.createElement('textarea'); ta.value = email;
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
-    }
-    setToast({ id: Date.now(), msg: 'Copied ' + email });
-  };
-  React.useEffect(() => {
-    if (!toast) return;
-    const id = setTimeout(() => setToast(null), 2400);
-    return () => clearTimeout(id);
-  }, [toast]);
-
   return (
     <>
       <Nav active={active} onNav={onNav} />
-      <Hero layout={t.heroLayout} copyEmail={copyEmail} />
+      <Hero layout={t.heroLayout} />
       <Marquee sep={t.marqueeSep} />
       <UtilityRow />
       <Projects variant={t.cardVariant} density={t.density} count={t.projectCount} />
       <div className="wrap"><div className="hr" /></div>
       <Career />
       <div className="wrap"><div className="hr" /></div>
-      <Benefits copyEmail={copyEmail} />
-      <Footer copyEmail={copyEmail} />
+      <Benefits />
+      <Footer />
 
-      <div className={`toast ${toast ? 'show' : ''}`}>
-        <Icon.Check /> {toast?.msg || ''}
-      </div>
+
 
       <TweaksPanel title="Tweaks">
         <TweakSection label="Hero" />

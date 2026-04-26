@@ -44,7 +44,7 @@ function Avatar({ size = 40 }) {
 }
 
 // ─── Hero ──────────────────────────────────────────────────────────
-function Hero({ layout = 'editorial', copyEmail }) {
+function Hero({ layout = 'editorial' }) {
   const inner =
     <>
       <div className="hero-top">
@@ -63,10 +63,10 @@ function Hero({ layout = 'editorial', copyEmail }) {
 
       </p>
       <div className="cta-row">
-        <button className="btn btn-solid" onClick={copyEmail}>
+        <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
           <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
-        </button>
-        <a className="btn btn-ghost btn-tg" href="https://t.me/bagrat" target="_blank" rel="noreferrer">
+        </a>
+        <a className="btn btn-ghost btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
           <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
         </a>
       </div>
@@ -91,10 +91,10 @@ function Hero({ layout = 'editorial', copyEmail }) {
                 surgical digital experiences for global startups and enterprises.
               </p>
               <div className="cta-row">
-                <button className="btn btn-solid" onClick={copyEmail}>
+                <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
                   <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
-                </button>
-                <a className="btn btn-ghost btn-tg" href="https://t.me/bagrat" target="_blank" rel="noreferrer">
+                </a>
+                <a className="btn btn-ghost btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
                   <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
                 </a>
               </div>
@@ -308,7 +308,7 @@ const BENEFITS = [
   { icon: <Icon.Schema />, n: '04', t: 'Systemic Logic', d: 'Abstract product logic made legible. Flows, states, edge cases — surfaced before implementation costs multiply.' }];
 
 
-function Benefits({ copyEmail }) {
+function Benefits() {
   return (
     <section className="block" id="why-me">
       <div className="wrap">
@@ -327,10 +327,10 @@ function Benefits({ copyEmail }) {
           )}
         </div>
         <div className="reveal" style={{ display: 'flex', gap: 10, marginTop: 28, justifyContent: 'center', animationDelay: '750ms' }}>
-          <button className="btn btn-solid" onClick={copyEmail}>
+          <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
             <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow"><Icon.Arrow size={11}/></span>
-          </button>
-          <a className="btn btn-ghost btn-tg" href="https://t.me/bagrat" target="_blank" rel="noreferrer">
+          </a>
+          <a className="btn btn-ghost btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
             <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
           </a>
         </div>
@@ -365,7 +365,7 @@ function ResumeModal({ onClose }) {
   );
 }
 
-function Footer({ copyEmail }) {
+function Footer() {
   const [resumeOpen, setResumeOpen] = React.useState(false);
   return (
     <>
@@ -378,10 +378,10 @@ function Footer({ copyEmail }) {
           <p className="reveal" style={{ animationDelay: '300ms' }}>Currently taking on a small number of Q3 engagements.
             I reply to every inbound within 24 hours.</p>
           <div className="reveal" style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', animationDelay: '450ms' }}>
-            <button className="btn btn-solid" onClick={copyEmail}>
+            <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
               <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow"><Icon.Arrow size={11}/></span>
-            </button>
-            <a className="btn btn-ghost btn-tg" href="https://t.me/bagrat" target="_blank" rel="noreferrer">
+            </a>
+            <a className="btn btn-ghost btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
               <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
             </a>
           </div>
