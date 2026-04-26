@@ -231,7 +231,7 @@ function Projects({ variant = 'stripes', density = 'regular', count = 4 }) {
     <section className="block" id="portfolio">
       <div className="wrap">
         <div className="section-head reveal">
-          <h2 style={{ fontFamily: "\"Inter Tight\"" }}>Latest product visions</h2>
+          <h2>Latest product visions</h2>
           <div className="meta">[ 01 — Selected Works ]</div>
         </div>
         <div className="project-grid" data-density={density}>
@@ -292,7 +292,7 @@ function Career() {
 
         <div id="path" className="section-head reveal">
           <h2>Path</h2>
-          <div className="meta" style={{ fontFamily: "\"JetBrains Mono\"" }}>[ 03 — Education & Certification ]</div>
+          <div className="meta">[ 03 — Education & Certification ]</div>
         </div>
         <div className="list" role="list">
           {EDU.map((r, i) =>
@@ -556,7 +556,7 @@ function Footer() {
   return (
     <>
     {resumeOpen && <ResumeModal onClose={() => setResumeOpen(false)} />}
-    <footer id="contact" style={{ fontFamily: "Inter" }}>
+    <footer id="contact">
       <FooterCanvas />
       <div className="wrap">
         <div className="footer-top">
@@ -601,7 +601,7 @@ function Footer() {
             <a href="https://x.com/Rati538066" target="_blank" rel="noopener noreferrer">Twitter / X <span className="ic"><DiagArrow size={10} /></span></a>
           </div>
           <div className="col">
-            <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"/ ELSEWHERE"}</div>
+            <div className="h">{"/ ELSEWHERE"}</div>
             <a href="https://read.cv/" target="_blank" rel="noopener noreferrer">Read.cv <span className="ic"><DiagArrow size={10} /></span></a>
             <a href="#" onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}>Resume PDF <span className="ic"><Icon.Download size={10}/></span></a>
           </div>

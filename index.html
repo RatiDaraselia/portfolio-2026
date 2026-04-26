@@ -7,8 +7,17 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon-circle.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@200..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@200..700&display=swap" rel="stylesheet" />
 <style>
+  @font-face{font-family:"Suisse Int'l Mono";src:url("assets/suisse int'l/SuisseIntlMonoTrial-Thin.otf") format("opentype");font-weight:200;font-style:normal;font-display:swap}
+  @font-face{font-family:"Suisse Int'l Mono";src:url("assets/suisse int'l/SuisseIntlMonoTrial-Regular.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:"Suisse Int'l Mono";src:url("assets/suisse int'l/SuisseIntlMonoTrial-Bold.otf") format("opentype");font-weight:700;font-style:normal;font-display:swap}
+
+  @font-face{font-family:"Suisse Int'l";src:url("assets/suisse int'l/SuisseIntlTrial-Thin.otf") format("opentype");font-weight:200;font-style:normal;font-display:swap}
+  @font-face{font-family:"Suisse Int'l";src:url("assets/suisse int'l/SuisseIntlTrial-Light.otf") format("opentype");font-weight:300;font-style:normal;font-display:swap}
+  @font-face{font-family:"Suisse Int'l";src:url("assets/suisse int'l/SuisseIntlTrial-Regular.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:"Suisse Int'l";src:url("assets/suisse int'l/SuisseIntlTrial-Medium.otf") format("opentype");font-weight:500;font-style:normal;font-display:swap}
+
   :root{
     --bg:#000;
     --bg-1:#070707;
@@ -20,9 +29,10 @@
     --fg-3:rgba(255,255,255,.52);
     --fg-4:rgba(255,255,255,.34);
     --fg-5:rgba(255,255,255,.18);
-    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --mono:"Suisse Int'l Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --sans:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
     --display:"Inter Tight",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    --suisse:"Suisse Int'l",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
     --col: 720px;
   }
   *{box-sizing:border-box}
@@ -131,7 +141,7 @@
     border:1px solid rgba(57,255,19,.35);animation:pulse 2.4s ease-out infinite}
   @keyframes pulse{0%{transform:scale(.7);opacity:.7}100%{transform:scale(1.6);opacity:0}}
 
-  h1.hero-title{font-family:var(--sans);font-weight:400;letter-spacing:-.03em;
+  h1.hero-title{font-family:var(--suisse);font-weight:400;letter-spacing:-.03em;
     font-size:clamp(40px,6.2vw,68px);line-height:1.02;margin:0 0 28px}
   h1.hero-title em{font-style:normal;color:rgba(255,255,255,.22);font-weight:400}
 
@@ -175,7 +185,7 @@
   /* Section scaffolding */
   section.block{padding:104px 0;position:relative}
   .section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px;gap:24px}
-  .section-head h2{font-family:var(--display);font-weight:300;font-size:clamp(28px,3.2vw,40px);
+  .section-head h2{font-family:var(--suisse);font-weight:400;font-size:clamp(28px,3.2vw,40px);
     letter-spacing:-.03em;margin:0;line-height:1}
   .section-head .meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--fg-4)}
@@ -199,7 +209,7 @@
     font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
     color:#fff;opacity:0;transform:translateY(6px)}
   .card .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-  .card .t{font-family:var(--display);font-weight:400;font-size:19px;letter-spacing:-.015em;color:var(--fg)}
+  .card .t{font-family:var(--display);font-weight:400;font-size:19px;letter-spacing:0;color:var(--fg)}
   .card .d{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4)}
   .card .sub{font-size:13px;color:var(--fg-3);line-height:1.5;margin:0}
   .card .ext{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:999px;
@@ -230,7 +240,7 @@
   .list .item{display:grid;grid-template-columns:1.3fr .8fr .9fr 96px;gap:20px;align-items:center;
     min-height:88px;padding:0;border-bottom:1px solid var(--line);transition:padding .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1)}
   .list .item:hover{background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);padding-left:6px;padding-right:6px}
-  .list .item .role{font-family:var(--display);font-size:18px;font-weight:400;letter-spacing:-.015em}
+  .list .item .role{font-family:var(--display);font-size:18px;font-weight:400;letter-spacing:0}
   .list .item .co{color:var(--fg-3);font-size:14px}
   .list .item .when{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4)}
   .list .item .type{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4);text-align:right}
@@ -242,7 +252,7 @@
   .benefit:hover{background:var(--bg-1)}
   .benefit .icon{width:26px;height:26px;display:grid;place-items:center;color:var(--fg-2);margin-bottom:6px}
   .benefit .num{position:absolute;top:22px;right:24px;font-family:var(--mono);font-size:10.5px;color:var(--fg-4);letter-spacing:.14em}
-  .benefit h3{font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:-.02em;margin:0}
+  .benefit h3{font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:0;margin:0}
   .benefit p{margin:0;color:var(--fg-3);font-size:13.5px;line-height:1.55;text-wrap:pretty}
 
   /* Footer */
@@ -254,7 +264,7 @@
   .footer-top::before{content:'';position:absolute;inset:-100px -140px;z-index:-1;pointer-events:none;
     background:radial-gradient(ellipse 65% 75% at 50% 50%,rgba(0,0,0,.88) 18%,rgba(0,0,0,.5) 48%,transparent 72%)}
   .footer-top{text-align:center;padding-bottom:96px;border-bottom:1px solid var(--line)}
-  .footer-top h2{font-family:var(--display);font-weight:300;font-size:clamp(44px,6vw,72px);
+  .footer-top h2{font-family:var(--suisse);font-weight:350;font-size:clamp(44px,6vw,72px);
     letter-spacing:-.035em;line-height:1;margin:0 0 22px}
   .footer-top p{color:var(--fg-3);max-width:440px;margin:0 auto 28px;font-size:15px;line-height:1.6}
 
