@@ -326,14 +326,6 @@ function Benefits() {
             </div>
           )}
         </div>
-        <div className="reveal" style={{ display: 'flex', gap: 10, marginTop: 28, justifyContent: 'center', animationDelay: '750ms' }}>
-          <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
-            <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow"><Icon.Arrow size={11}/></span>
-          </a>
-          <a className="btn btn-ghost btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
-            <Icon.Telegram /> Telegram <span className="arrow"><Icon.ArrowUpRight size={11}/></span>
-          </a>
-        </div>
       </div>
     </section>);
 
