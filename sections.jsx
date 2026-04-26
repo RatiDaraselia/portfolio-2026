@@ -399,15 +399,15 @@ function Footer() {
           </div>
           <div className="col">
             <div className="h">/ SOCIALS</div>
-            <a href="#">Dribbble <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">Behance <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">LinkedIn <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">Instagram <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
-            <a href="#">Twitter / X <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="https://dribbble.com/Ratidaraselia" target="_blank" rel="noopener noreferrer">Dribbble <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="https://www.behance.net/ratidaraselia" target="_blank" rel="noopener noreferrer">Behance <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="https://www.linkedin.com/in/rati-daraselia-7b9587214/" target="_blank" rel="noopener noreferrer">LinkedIn <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="https://www.instagram.com/euhemerus.studio/" target="_blank" rel="noopener noreferrer">Instagram <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="https://x.com/Rati538066" target="_blank" rel="noopener noreferrer">Twitter / X <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
           </div>
           <div className="col">
             <div className="h" style={{ fontFamily: "\"JetBrains Mono\"" }}>{"/ ELSEWHERE"}</div>
-            <a href="#">Read.cv <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
+            <a href="https://read.cv/" target="_blank" rel="noopener noreferrer">Read.cv <span className="ic"><Icon.ArrowUpRight size={10}/></span></a>
             <a href="#" onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}>Resume PDF <span className="ic"><Icon.Download size={10}/></span></a>
           </div>
         </div>
