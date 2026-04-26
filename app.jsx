@@ -3,7 +3,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "heroLayout": "editorial",
   "cardVariant": "stripes",
   "density": "regular",
-  "projectCount": 4,
+  "projectCount": 5,
   "spotlight": true,
   "marqueeSep": "slash"
 }/*EDITMODE-END*/;
@@ -172,7 +172,7 @@ function App() {
           options={['tight', 'regular', 'loose']}
           onChange={(v) => setTweak('density', v)} />
         <TweakSlider label="Project count" value={t.projectCount}
-          min={2} max={6} step={1}
+          min={2} max={7} step={1}
           onChange={(v) => setTweak('projectCount', v)} />
 
         <TweakSection label="Marquee" />

@@ -161,6 +161,7 @@ function nowTbilisi() {
 const PROJECTS = [
   { id: 'axiom', name: 'Axiom', tag: 'SaaS · Analytics', date: 'Aug 2024', img: 'assets/axiom-thumbnail.jpg', link: '#' },
   { id: 'garder', name: 'Garderobe', tag: 'E-commerce · Fashion', date: 'Jan 2026', img: 'assets/garderobe-thumbnail.jpg', link: '#' },
+  { id: 'visionos', name: 'Vision OS: Google Home UI Concept', tag: 'Spatial · visionOS', date: 'May 2025', img: 'assets/visionOS-thumbnail.jpg', link: '#', wide: true },
   { id: 'solvaer', name: 'Solvær', tag: 'Spatial · visionOS', date: 'Oct 2025', img: 'assets/solvaer-thumbnail.jpg', link: '#' },
   { id: 'nora', name: 'nora', tag: 'Agent · Productivity', date: 'Aug 2025', img: 'assets/nora-thumbnail.jpg', link: '#' },
   { id: 'aquageo', name: 'AquaGeo', tag: 'Enterprise · GIS', date: 'Apr 2025', glyph: 'AQ', link: '#' },
@@ -198,8 +199,10 @@ function ProjectThumb({ project, variant }) {
 
 function ProjectCard({ p, variant, revealDelay = 0 }) {
   return (
-    <article className="card reveal" style={{ animationDelay: `${revealDelay}ms` }}>
-      <a href={p.link} className="thumb" aria-label={`${p.name}, open external`}>
+    <article className="card reveal"
+      style={{ animationDelay: `${revealDelay}ms`, ...(p.wide && { gridColumn: '1 / -1' }) }}>
+      <a href={p.link} className="thumb" aria-label={`${p.name}, open external`}
+        style={p.wide ? { aspectRatio: '40/21' } : undefined}>
         <ProjectThumb project={p} variant={variant} />
         <span className="thumb-label">View case · {p.tag}</span>
         <span className="ext" aria-hidden><Icon.ArrowUpRight size={12} /></span>
