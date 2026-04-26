@@ -243,7 +243,7 @@ const CAREER = [
 const EDU = [
   { role: 'Computer Science, B.Sc.', co: 'SANGU — St. Andrew\'s University', when: '2018 — 2022', type: 'Education' },
   { role: 'Google UX Design Professional', co: 'Coursera · Google', when: '2021', type: 'Certificate' },
-  { role: 'Interaction Design Foundation', co: 'UX Research & Strategy', when: '2022', type: 'Certificate' }];
+  { role: <>Interaction Design<br/>Foundation</>, co: 'UX Research & Strategy', when: '2022', type: 'Certificate' }];
 
 
 function CoCell({ value }) {
