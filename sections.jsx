@@ -323,7 +323,7 @@ function Career() {
           )}
         </div>
 
-        <div style={{ height: 80 }} />
+        <div style={{ height: 208 }} />
 
         <div id="path" className="section-head reveal">
           <h2>Path</h2>

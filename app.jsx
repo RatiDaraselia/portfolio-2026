@@ -189,7 +189,6 @@ function App() {
       <Marquee sep={t.marqueeSep} />
       <UtilityRow />
       <Projects variant={t.cardVariant} density={t.density} count={t.projectCount} />
-      <div className="wrap"><div className="hr" /></div>
       <Career />
       <Benefits />
       <Footer />
