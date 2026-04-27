@@ -67,11 +67,7 @@ function Hero({ layout = 'editorial' }) {
       <h1 className="hero-title">
         Bagrat <em>Daraselia.</em>
       </h1>
-      <p className="thesis">Architecting high-fidelity interfaces at the intersection of spatial computing and SaaS complexity — transforming abstract product logic into surgical digital experiences for global startups and enterprises.
-
-
-
-      </p>
+      <p className="thesis">Transforming complex product logic into surgical, scalable digital experiences — from dense SaaS dashboards to luxury editorial interfaces — with the precision of an engineer, the eye of an art director, and zero compromise.</p>
       <div className="cta-row">
         <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
           <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
@@ -95,11 +91,7 @@ function Hero({ layout = 'editorial' }) {
               <h1 className="hero-title" style={{ marginTop: 0 }}>
                 Bagrat <em>Daraselia.</em>
               </h1>
-              <p className="thesis">
-                Architecting high-fidelity interfaces at the intersection of spatial
-                computing and SaaS complexity—transforming abstract product logic into
-                surgical digital experiences for global startups and enterprises.
-              </p>
+              <p className="thesis">Transforming complex product logic into surgical, scalable digital experiences — from dense SaaS dashboards to luxury editorial interfaces — with the precision of an engineer, the eye of an art director, and zero compromise.</p>
               <div className="cta-row">
                 <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
                   <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
@@ -247,10 +239,14 @@ function Projects({ variant = 'stripes', density = 'regular', count = 4 }) {
 
 // ─── Career ────────────────────────────────────────────────────────
 const CAREER = [
-  { role: 'Lead Designer', co: 'AquaGeo — Enterprise GIS', when: '2024 — Present', type: 'Full-time' },
-  { role: 'Senior Product Designer', co: 'Garderobe — Redesign', when: '2023 — 2024', type: 'Contract' },
-  { role: 'Product Designer', co: 'Solvær — Spatial / visionOS', when: '2022 — 2023', type: 'Contract' },
-  { role: 'UI/UX Designer', co: 'nora — Agent Productivity', when: '2021 — 2022', type: 'Freelance' }];
+  { role: 'Graphic Designer',       co: 'Cubicle — Design / Creative Agency',  when: 'Feb 2026 — Present',  type: 'Contract'      },
+  { role: 'Visual Designer',        co: 'AQUA GEO — FMCG / Beverage',          when: 'Mar 2026 — Present',  type: 'Contract'      },
+  { role: 'Product Designer',       co: 'Garderobe — Fashion / Retail',         when: 'Apr 2025 — Present',  type: 'Contract'      },
+  { role: 'UI/UX Designer',         co: 'Dribbble — Various Freelance Projects', when: '2021 — Present',      type: 'Freelance'     },
+  { role: 'UI/UX Designer',         co: 'Premium Jewelry Brand — E-commerce',   when: '2024',                type: 'Freelance'     },
+  { role: 'UI/UX Designer',         co: 'MASTERY™ — Early-Stage AI Startup',    when: '2022',                type: 'Equity Collab' },
+  { role: 'Sales Manager',          co: 'ALTA — Consumer Electronics',          when: 'Nov 2023 — Mar 2024', type: 'Full-time'     },
+  { role: 'Electronics Specialist', co: 'zoommer — Consumer Electronics',       when: 'Aug 2021 — Nov 2023', type: 'Full-time'     }];
 
 const GOOGLE_UX_COURSES = [
   { idx: '01', name: 'Foundations of User Experience (UX) Design' },
@@ -351,10 +347,10 @@ function Career() {
 
 // ─── Benefits ──────────────────────────────────────────────────────
 const BENEFITS = [
-  { icon: <Icon.Scale />, n: '01', t: 'Scalability', d: 'Systems built to grow — token architectures and primitives that hold their shape from marketing page to admin console.' },
-  { icon: <Icon.Crosshair />, n: '02', t: 'Precision', d: 'Pixel-accurate, spec-tight output. Every spacing value, every radius, every transition is deliberate and defensible.' },
-  { icon: <Icon.Terminal />, n: '03', t: 'Developer-Ready', d: 'Figma files ship like code. Variables, variants, naming conventions and documentation your engineers will actually read.' },
-  { icon: <Icon.Schema />, n: '04', t: 'Systemic Logic', d: 'Abstract product logic made legible. Flows, states, edge cases — surfaced before implementation costs multiply.' }];
+  { icon: <Icon.Scale />, n: '01', t: 'Scalability', d: 'Multi-platform ecosystems engineered to grow — component architectures and token systems that hold structural integrity from landing page to full-scale admin console.' },
+  { icon: <Icon.Crosshair />, n: '02', t: 'Precision', d: 'Mathematically governed output. Every grid unit, typographic ratio, and spacing decision is deliberate, systemic, and architecturally defensible — never eyeballed.' },
+  { icon: <Icon.Terminal />, n: '03', t: 'Developer-Ready', d: 'Figma files built like codebases. Named components, bound variables, and auto-layout logic your engineers can implement without a single clarifying call.' },
+  { icon: <Icon.Schema />, n: '04', t: 'Systemic Logic', d: 'Complex product flows made legible. User states, conditional paths, and edge cases — fully resolved and documented before implementation costs compound.' }];
 
 
 function Benefits() {
