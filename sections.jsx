@@ -280,6 +280,34 @@ function CoCell({ value }) {
   );
 }
 
+function SubList({ subs }) {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      container.querySelectorAll('.item-sub').forEach((row, i) => {
+        row.style.animationDelay = `${i * 80}ms`;
+        row.classList.add('sub-visible');
+      });
+      io.disconnect();
+    }, { threshold: 0, rootMargin: '0px 0px -24px 0px' });
+    io.observe(container);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div className="item-subs" ref={ref}>
+      {subs.map((s) =>
+        <div className="item-sub" key={s.idx}>
+          <span className="sub-name">{s.name}</span>
+          <span className="sub-idx">[{s.idx}]</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Career() {
   return (
     <section className="block" id="career">
@@ -312,16 +340,7 @@ function Career() {
               <CoCell value={r.co} />
               <div className="when">{r.when}</div>
               <div className="type">{r.type}</div>
-              {r.subs && (
-                <div className="item-subs">
-                  {r.subs.map((s) =>
-                    <div className="item-sub" key={s.idx}>
-                      <span className="sub-name">{s.name}</span>
-                      <span className="sub-idx">[{s.idx}]</span>
-                    </div>
-                  )}
-                </div>
-              )}
+              {r.subs && <SubList subs={r.subs} />}
             </div>
           )}
         </div>
