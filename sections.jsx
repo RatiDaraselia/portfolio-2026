@@ -354,6 +354,22 @@ const BENEFITS = [
 
 
 function Benefits() {
+  const gridRef = React.useRef(null);
+  React.useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      grid.querySelectorAll('.benefit').forEach((card, i) => {
+        card.style.animationDelay = `${i * 100}ms`;
+        card.classList.add('benefit-visible');
+      });
+      io.disconnect();
+    }, { threshold: 0.1 });
+    io.observe(grid);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section className="block" id="why-me">
       <div className="wrap">
@@ -361,9 +377,9 @@ function Benefits() {
           <h2>Why me</h2>
           <div className="meta">[ 04 — Operating Principles ]</div>
         </div>
-        <div className="benefits">
-          {BENEFITS.map((b, i) =>
-            <div className="benefit reveal" key={b.n} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
+        <div className="benefits" ref={gridRef}>
+          {BENEFITS.map((b) =>
+            <div className="benefit" key={b.n}>
               <div className="num">{b.n}</div>
               <div className="icon">{b.icon}</div>
               <h3>{b.t}</h3>
@@ -660,6 +676,7 @@ function Footer() {
           </div>
           <div className="col">
             <div className="h">{"/ ELSEWHERE"}</div>
+            <a href="https://github.com/RatiDaraselia" target="_blank" rel="noopener noreferrer">GitHub <span className="ic"><DiagArrow size={10} /></span></a>
             <a href="https://read.cv/" target="_blank" rel="noopener noreferrer">Read.cv <span className="ic"><DiagArrow size={10} /></span></a>
             <a href="#" onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}>Resume PDF <span className="ic"><Icon.Download size={10}/></span></a>
           </div>

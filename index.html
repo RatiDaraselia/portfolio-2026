@@ -272,12 +272,21 @@
   @media(prefers-reduced-motion:reduce){.item-sub{opacity:1;transform:none}.item-sub.sub-visible{animation:none}}
 
   /* Benefits */
-  .benefits{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .benefits{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px}
   .benefit{background:var(--bg);padding:28px 26px;display:flex;flex-direction:column;gap:10px;min-height:170px;
-    transition:background .6s cubic-bezier(.4,0,.2,1);position:relative}
-  .benefit:hover{background:var(--bg-1)}
-  .benefit .icon{width:26px;height:26px;display:grid;place-items:center;color:var(--fg-2);margin-bottom:6px}
-  .benefit .num{position:absolute;top:22px;right:24px;font-family:var(--mono);font-size:10.5px;color:var(--fg-4);letter-spacing:.14em}
+    transition:box-shadow .5s ease-out,transform .5s ease-out;position:relative;
+    opacity:0;transform:translateY(15px)}
+  .benefit:nth-child(1){border-top-left-radius:13px}
+  .benefit:nth-child(2){border-top-right-radius:13px}
+  .benefit:nth-child(3){border-bottom-left-radius:13px}
+  .benefit:nth-child(4){border-bottom-right-radius:13px}
+  .benefit.benefit-visible{animation:benefitIn 700ms cubic-bezier(.16,1,.3,1) both}
+  .benefit:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.30);transform:translateY(-2px)}
+  .benefit .icon{width:26px;height:26px;display:grid;place-items:center;color:var(--fg-4);margin-bottom:6px;transition:color .5s ease-out}
+  .benefit .num{position:absolute;top:22px;right:24px;font-family:var(--mono);font-size:10.5px;color:var(--fg-4);letter-spacing:.14em;transition:color .5s ease-out}
+  .benefit:hover .icon,.benefit:hover .num{color:#fff}
+  @keyframes benefitIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.benefit{opacity:1;transform:none}.benefit.benefit-visible{animation:none}}
   .benefit h3{font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:0;margin:0}
   .benefit p{margin:0;color:var(--fg-3);font-size:13.5px;line-height:1.55;text-wrap:pretty}
 
