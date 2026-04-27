@@ -161,13 +161,13 @@ function nowTbilisi() {
 
 // ─── Projects ──────────────────────────────────────────────────────
 const PROJECTS = [
-  { id: 'axiom', name: 'Axiom', tag: 'SaaS · Analytics', date: 'Aug 2024', img: 'assets/axiom-thumbnail.jpg', link: 'https://dribbble.com/shots/27310731-Axiom-Overview-Dashboard' },
-  { id: 'garder', name: 'Garderobe', tag: 'E-commerce · Fashion', date: 'Jan 2026', img: 'assets/garderobe-thumbnail-light.jpg', link: 'https://www.behance.net/gallery/247598239/GARDEROBE-UXUI-Luxury-Fashion-E-Commerce-Project' },
-  { id: 'visionos', name: 'Vision OS: Google Home UI Concept', tag: 'Spatial · visionOS', date: 'May 2025', img: 'assets/visionOS-thumbnail.jpg', link: 'https://dribbble.com/shots/26049461-Vision-OS-Google-Home-UI-Concept', wide: true },
-  { id: 'solvaer', name: 'Solvær', tag: 'Contemporary · ecommerce', date: 'Oct 2025', img: 'assets/solvaer-thumbnail-light.jpg', link: 'https://dribbble.com/shots/26724768-Solv-r-Catalog-of-Contemporary-Collectible-Design-Pieces' },
-  { id: 'nora', name: 'Nora', tag: 'Agent · Productivity', date: 'Aug 2025', img: 'assets/nora-thumbnail-light.jpg', link: 'https://dribbble.com/shots/26741553-nora-Collaborative-Workspace-and-Knowledge-Management-Tool' },
-  { id: 'aquageo', name: 'AquaGeo', tag: 'Enterprise · GIS', date: 'Apr 2025', glyph: 'AQ', link: '#' },
-  { id: 'halcyon', name: 'Halcyon', tag: 'Fintech · Mobile', date: 'Feb 2025', glyph: 'HA', link: '#' }];
+  { id: 'axiom',   name: 'Axiom',                          tag: 'SaaS · Analytics',        pill: 'Concept',    img: 'assets/axiom-thumbnail.jpg',          link: 'https://dribbble.com/shots/27310731-Axiom-Overview-Dashboard' },
+  { id: 'garder',  name: 'Garderobe',                      tag: 'E-commerce · Fashion',     pill: 'Case Study', img: 'assets/garderobe-thumbnail-light.jpg', link: 'https://www.behance.net/gallery/247598239/GARDEROBE-UXUI-Luxury-Fashion-E-Commerce-Project' },
+  { id: 'visionos',name: 'Vision OS: Google Home UI Concept', tag: 'Spatial · visionOS',   pill: 'Concept',    img: 'assets/visionOS-thumbnail.jpg',        link: 'https://dribbble.com/shots/26049461-Vision-OS-Google-Home-UI-Concept', wide: true },
+  { id: 'solvaer', name: 'Solvær',                         tag: 'Contemporary · ecommerce', pill: 'Concept',    img: 'assets/solvaer-thumbnail-light.jpg',   link: 'https://dribbble.com/shots/26724768-Solv-r-Catalog-of-Contemporary-Collectible-Design-Pieces' },
+  { id: 'nora',    name: 'Nora',                           tag: 'Agent · Productivity',     pill: 'Concept',    img: 'assets/nora-thumbnail-light.jpg',      link: 'https://dribbble.com/shots/26741553-nora-Collaborative-Workspace-and-Knowledge-Management-Tool' },
+  { id: 'aquageo', name: 'AquaGeo',                        tag: 'Enterprise · GIS',         pill: 'Concept',    glyph: 'AQ', link: '#' },
+  { id: 'halcyon', name: 'Halcyon',                        tag: 'Fintech · Mobile',         pill: 'Concept',    glyph: 'HA', link: '#' }];
 
 
 function ProjectThumb({ project, variant }) {
@@ -211,7 +211,7 @@ function ProjectCard({ p, variant, revealDelay = 0 }) {
       <div>
         <div className="row">
           <div className="t">{p.name}</div>
-          <div className="d">{p.date}</div>
+          <span className="design-pill" style={{ marginRight: 0 }}>{p.pill}</span>
         </div>
         <p className="sub">{p.tag}</p>
       </div>
