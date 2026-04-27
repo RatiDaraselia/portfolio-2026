@@ -241,12 +241,12 @@ function Projects({ variant = 'stripes', density = 'regular', count = 4 }) {
 const CAREER = [
   { role: 'Graphic Designer',       co: 'Cubicle — Design / Creative Agency',  when: 'Feb 2026 — Present',  type: 'Contract'      },
   { role: 'Visual Designer',        co: 'AQUA GEO — FMCG / Beverage',          when: 'Mar 2026 — Present',  type: 'Contract'      },
-  { role: 'Product Designer',       co: 'Garderobe — Fashion / Retail',         when: 'Apr 2025 — Present',  type: 'Contract'      },
+  { role: 'Product Designer',       co: 'Garderobe — Fashion / Retail',         when: '2025 — Present',      type: 'Contract'      },
   { role: 'UI/UX Designer',         co: 'Dribbble — Various Freelance Projects', when: '2021 — Present',      type: 'Freelance'     },
   { role: 'UI/UX Designer',         co: 'Premium Jewelry Brand — E-commerce',   when: '2024',                type: 'Freelance'     },
   { role: 'UI/UX Designer',         co: 'MASTERY™ — Early-Stage AI Startup',    when: '2022',                type: 'Equity Collab' },
-  { role: 'Sales Manager',          co: 'ALTA — Consumer Electronics',          when: 'Nov 2023 — Mar 2024', type: 'Full-time'     },
-  { role: 'Electronics Specialist', co: 'zoommer — Consumer Electronics',       when: 'Aug 2021 — Nov 2023', type: 'Full-time'     }];
+  { role: 'Sales Manager',          co: 'ALTA — Consumer Electronics',          when: '2023 — 2024',         type: 'Full-time'     },
+  { role: 'Electronics Specialist', co: 'zoommer — Consumer Electronics',       when: '2021 — 2023',         type: 'Full-time'     }];
 
 const GOOGLE_UX_COURSES = [
   { idx: '01', name: 'Foundations of User Experience (UX) Design' },
