@@ -241,7 +241,7 @@ function Projects({ variant = 'stripes', density = 'regular', count = 4 }) {
 const CAREER = [
   { role: 'Visual Designer',        co: 'AQUA GEO — FMCG / Beverage',          when: 'Mar 2026 — Present',  type: 'Contract'      },
   { role: 'Graphic Designer',       co: 'Cubicle — Design / Creative Agency',  when: 'Feb 2026 — Present',  type: 'Contract'      },
-  { role: 'Product Designer',       co: 'Garderobe — Fashion / Retail',         when: '2025 — Present',      type: 'Contract'      },
+  { role: 'Product Designer',       co: 'Garderobe — Fashion / Retail',         when: '2025 — 2026',         type: 'Contract'      },
   { role: 'UI/UX Designer',         co: 'Dribbble — Various Freelance Projects', when: '2021 — Present',      type: 'Freelance'     },
   { role: 'UI/UX Designer',         co: 'Premium Jewelry Brand — E-commerce',   when: '2024',                type: 'Freelance'     },
   { role: 'UI/UX Designer',         co: 'MASTERY™ — Early-Stage AI Startup',    when: '2022',                type: 'Equity' },
