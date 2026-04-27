@@ -191,7 +191,6 @@ function App() {
       <Projects variant={t.cardVariant} density={t.density} count={t.projectCount} />
       <div className="wrap"><div className="hr" /></div>
       <Career />
-      <div className="wrap"><div className="hr" /></div>
       <Benefits />
       <Footer />
 
