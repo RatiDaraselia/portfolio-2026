@@ -244,7 +244,7 @@ const CAREER = [
   { role: 'Product Designer',       co: 'Garderobe — Fashion / Retail',         when: '2025 — Present',      type: 'Contract'      },
   { role: 'UI/UX Designer',         co: 'Dribbble — Various Freelance Projects', when: '2021 — Present',      type: 'Freelance'     },
   { role: 'UI/UX Designer',         co: 'Premium Jewelry Brand — E-commerce',   when: '2024',                type: 'Freelance'     },
-  { role: 'UI/UX Designer',         co: 'MASTERY™ — Early-Stage AI Startup',    when: '2022',                type: 'Equity Collab' },
+  { role: 'UI/UX Designer',         co: 'MASTERY™ — Early-Stage AI Startup',    when: '2022',                type: 'Equity' },
   { role: 'Sales Manager',          co: 'ALTA — Consumer Electronics',          when: '2023 — 2024',         type: 'Full-time'     },
   { role: 'Electronics Specialist', co: 'zoommer — Consumer Electronics',       when: '2021 — 2023',         type: 'Full-time'     }];
 
@@ -259,8 +259,8 @@ const GOOGLE_UX_COURSES = [
   { idx: '08', name: 'Accelerate Your Job Search with AI' }];
 
 const EDU = [
-  { role: <>Interaction Design<br/>Foundation</>, co: 'UX Research & Strategy', when: '2022', type: 'Certificate' },
-  { role: 'Google UX Design Professional', co: 'Coursera · Google', when: '2021', type: 'Certificate', subs: GOOGLE_UX_COURSES },
+  { role: <>Interaction Design<br/>Foundation</>, co: 'UX Research & Strategy', when: '2026', type: 'Certificate' },
+  { role: 'Google UX Design Professional', co: 'Coursera · Google', when: '2026', type: 'Certificate', subs: GOOGLE_UX_COURSES },
   { role: 'Computer Science, B.Sc.', co: 'SANGU — St. Andrew\'s University', when: '2018 — 2022', type: 'Education' }];
 
 
@@ -636,7 +636,7 @@ function Footer() {
           <Avatar size={44} />
           <div className="meta">
             <div className="n">Bagrat Daraselia</div>
-            <div className="r">UI/UX Designer crafting clean & modern designs.</div>
+            <div className="r">Digital Product Designer. Precision-engineered, aesthetically ruthless.</div>
           </div>
         </div>
 
