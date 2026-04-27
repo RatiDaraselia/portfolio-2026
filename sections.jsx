@@ -514,9 +514,6 @@ function FooterCanvas() {
 
       const cloud = new THREE.Points(geo, mat);
       cloud.frustumCulled = false;
-      // Anchor the dense body of the mist below the CTA buttons —
-      // upper drift can still graze the button area on its peaks
-      cloud.position.y = -0.55;
       scene.add(cloud);
 
       // Pre-compile shaders in background so they don't block main thread on first render
