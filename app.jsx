@@ -177,7 +177,7 @@ function App() {
         entry.target.classList.add('visible');
         io.unobserve(entry.target);
       });
-    }, { rootMargin: '-15% 0px', threshold: 0 });
+    }, { rootMargin: '0px', threshold: 0 });
     els.forEach(el => io.observe(el));
     return () => io.disconnect();
   }, []);

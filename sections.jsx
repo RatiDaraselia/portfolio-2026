@@ -59,6 +59,7 @@ function Hero({ layout = 'editorial' }) {
       <div className="hero-top">
         <Avatar size={88} />
         <div className="status">
+          <span className="design-pill">Digital Product Designer</span>
           <span className="pulse" />
           <span>Available · Q3 '26</span>
         </div>
@@ -89,7 +90,7 @@ function Hero({ layout = 'editorial' }) {
             <Avatar size={92} />
             <div>
               <div className="status" style={{ marginBottom: 18 }}>
-                <span className="pulse" /><span>Available · Q3 '26</span>
+                <span className="design-pill">Digital Product Designer</span><span className="pulse" /><span>Available · Q3 '26</span>
               </div>
               <h1 className="hero-title" style={{ marginTop: 0 }}>
                 Bagrat <em>Daraselia.</em>
