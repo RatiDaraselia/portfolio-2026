@@ -633,7 +633,7 @@ function Footer() {
     <footer id="contact">
       <div className="wrap">
         <div className="footer-top">
-          <div className="eyebrow reveal" style={{ marginBottom: 18 }}>[ 05 — Get in Touch ]</div>
+          <div className="eyebrow reveal" style={{ marginBottom: 36 }}>[ 05 — Get in Touch ]</div>
           <h2 className="reveal" style={{ animationDelay: '150ms' }}>Let's get in touch.</h2>
           <p className="reveal" style={{ animationDelay: '300ms' }}>Currently taking on a small number of Q3 engagements.
             I reply to every inbound within 24 hours.</p>
@@ -692,8 +692,8 @@ function Footer() {
         </div>
         <div className="sub">
           <span>© 2026 — All rights reserved</span>
-          <span>© 2026</span>
-          <span>Built from first principles · v2.4</span>
+          <span>BAGRATTI.CO</span>
+          <span>ENGINEERED WITH PRECISION — V2.4</span>
         </div>
       </div>
     </footer>
