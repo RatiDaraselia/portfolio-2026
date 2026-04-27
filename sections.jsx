@@ -588,9 +588,9 @@ function Footer() {
           <div className="footer-cta-zone reveal" style={{ animationDelay: '450ms' }}>
             <div className="cta-canvas-wrap" aria-hidden="true"><FooterCanvas /></div>
             <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
-              <Icon.Mail /> ratidaraselia.ui@gmail.com <span className="arrow"><Icon.Arrow size={11}/></span>
+              <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
             </a>
-            <a className="btn btn-ghost btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
+            <a className="btn btn-tg-footer" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
               <Icon.Telegram /> Telegram <DiagArrow size={11} />
             </a>
           </div>

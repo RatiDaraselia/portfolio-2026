@@ -115,8 +115,14 @@
   /* Solid white variant — spatial lift on hover */
   .btn-solid{background:#fff;color:#000;border-color:#fff}
   .btn-solid:hover{background:#fff;color:#000;border-color:#fff;transform:scale(1.02);box-shadow:0 4px 24px rgba(255,255,255,.15)}
-  /* Telegram variant — frosted fill, monochromatic */
-  .btn-tg:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3)}
+  /* Telegram variant — ghost (Header) */
+  .btn-tg{background:transparent;border:.5px solid rgba(255,255,255,0.14)}
+  .btn-tg:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3);transform:scale(1.02)}
+  .btn-tg:hover .arrow{color:#fff}
+  /* Telegram variant — solid black (Footer) */
+  .btn-tg-footer{background:#000;color:#fff;border:.5px solid rgba(255,255,255,0.14)}
+  .btn-tg-footer:hover{background:#0a0a0a;color:#fff;border-color:rgba(255,255,255,.3);transform:scale(1.02)}
+  .btn-tg-footer:hover .arrow{color:#fff}
   .btn-tg:hover .arrow{color:#fff}
 
   /* Hero */
