@@ -64,8 +64,8 @@ function Hero({ layout = 'editorial' }) {
           <span>Available · Q3 '26</span>
         </div>
       </div>
-      <h1 className="hero-title" style={{ color: "rgb(255, 255, 255)" }}>
-        Bagrat <em style={{ color: "rgb(255, 255, 255)" }}>Daraselia.</em>
+      <h1 className="hero-title">
+        Bagrat <em>Daraselia.</em>
       </h1>
       <p className="thesis">Architecting high-fidelity interfaces at the intersection of spatial computing and SaaS complexity — transforming abstract product logic into surgical digital experiences for global startups and enterprises.
 
@@ -218,7 +218,7 @@ function ProjectCard({ p, variant, revealDelay = 0 }) {
       </a>
       <div>
         <div className="row">
-          <div className="t" style={{ color: "rgb(255, 255, 255)" }}>{p.name}</div>
+          <div className="t">{p.name}</div>
           <div className="d">{p.date}</div>
         </div>
         <p className="sub">{p.tag}</p>
@@ -274,7 +274,7 @@ function CoCell({ value }) {
   if (idx === -1) return <div className="co">{value}</div>;
   return (
     <div className="co">
-      <div style={{ color:'var(--fg-1)', lineHeight:1.2 }}>{value.slice(0, idx)} —</div>
+      <div style={{ color:'var(--fg-2)', lineHeight:1.2 }}>{value.slice(0, idx)} —</div>
       <div style={{ color:'rgba(255,255,255,0.4)', fontSize:12, lineHeight:1.2 }}>{value.slice(idx + sep.length)}</div>
     </div>
   );

@@ -23,8 +23,8 @@
     --line:rgba(255,255,255,.10);
     --line-2:rgba(255,255,255,.14);
     --fg:#fff;
-    --fg-2:rgba(255,255,255,.70);
-    --fg-3:rgba(255,255,255,.70);
+    --fg-2:rgba(255,255,255,.60);
+    --fg-3:rgba(255,255,255,.60);
     --fg-4:rgba(255,255,255,.40);
     --fg-5:rgba(255,255,255,.18);
     --mono:"Suisse Int'l Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -146,7 +146,7 @@
   .avatar .mono-badge{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);
     font-weight:500;font-size:14px;color:var(--fg-2);letter-spacing:-.02em}
   .status{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;
-    letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3)}
+    letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4)}
   .status .pulse{width:6px;height:6px;border-radius:999px;background:#39FF13;position:relative;
     box-shadow:0 0 8px rgba(57,255,19,.45)}
   .status .pulse::after{content:"";position:absolute;inset:-4px;border-radius:999px;
@@ -188,7 +188,7 @@
 
   .utility-row{display:flex;justify-content:space-between;align-items:center;
     padding:14px 0;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--fg-3)}
+    text-transform:uppercase;color:var(--fg-4)}
   .utility-row .dots{display:inline-flex;gap:6px;align-items:center}
   .utility-row .live-dot{width:6px;height:6px;border-radius:999px;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.5);
     animation:blink 1.6s ease-in-out infinite}
@@ -225,7 +225,7 @@
   .card .d{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4)}
   .card .sub{font-size:13px;color:var(--fg-3);line-height:1.5;margin:0}
   .card .ext{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:999px;
-    background:rgba(10,10,10,.55);border:.5px solid rgba(255,255,255,.14);display:grid;place-items:center;
+    background:rgba(0,0,0,.55);border:.5px solid rgba(255,255,255,.14);display:grid;place-items:center;
     -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--fg-2);z-index:3;
     opacity:0;transform:translate(-3px,3px);
     transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
@@ -243,7 +243,7 @@
   .thumb-grad .glyph{position:absolute;inset:0;display:grid;place-items:center;z-index:1;
     font-family:var(--display);font-weight:200;font-size:76px;color:rgba(255,255,255,.62);letter-spacing:-.04em;
     mix-blend-mode:overlay}
-  .thumb-block{position:absolute;inset:0;background:#0a0a0a;display:grid;place-items:center}
+  .thumb-block{position:absolute;inset:0;background:var(--bg);display:grid;place-items:center}
   .thumb-block .glyph{font-family:var(--display);font-weight:200;font-size:72px;color:var(--fg-3);letter-spacing:-.04em}
   .thumb-block::before{content:"";position:absolute;inset:16px;border:.5px solid var(--line);border-radius:6px}
 
