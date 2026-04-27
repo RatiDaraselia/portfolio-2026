@@ -628,12 +628,12 @@ function Footer() {
         <div className="foot-cols reveal" style={{ animationDelay: '150ms' }}>
           <div className="col">
             <div className="h">/ SECTIONS</div>
-            <a href="#about">About</a>
-            <a href="#portfolio">Portfolio</a>
-            <a href="#career">Career</a>
-            <a href="#path">Path</a>
-            <a href="#why-me">Why me</a>
-            <a href="#contact">Contact</a>
+            <a href="#about">About <span className="ic"><Icon.ArrowElbowDownLeft size={10} /></span></a>
+            <a href="#portfolio">Portfolio <span className="ic"><Icon.ArrowElbowDownLeft size={10} /></span></a>
+            <a href="#career">Career <span className="ic"><Icon.ArrowElbowDownLeft size={10} /></span></a>
+            <a href="#path">Path <span className="ic"><Icon.ArrowElbowDownLeft size={10} /></span></a>
+            <a href="#why-me">Why me <span className="ic"><Icon.ArrowElbowDownLeft size={10} /></span></a>
+            <a href="#contact">Contact <span className="ic"><Icon.ArrowElbowDownLeft size={10} /></span></a>
           </div>
           <div className="col">
             <div className="h">/ SOCIALS</div>
