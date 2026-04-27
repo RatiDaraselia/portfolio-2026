@@ -11,12 +11,41 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [active, setActive] = React.useState('about');
+  const lenisRef = React.useRef(null);
+
+  // Global Lenis Smooth Scroll
+  React.useEffect(() => {
+    const lenis = new window.Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      smoothTouch: false
+    });
+    lenisRef.current = lenis;
+
+    const raf = (time) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   // Smooth scroll on nav click
   const onNav = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
-    const y = el.getBoundingClientRect().top + window.scrollY - 20;
-    window.scrollTo({ top: y, behavior: 'smooth' });
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(el, { offset: -20 });
+    } else {
+      const y = el.getBoundingClientRect().top + window.scrollY - 20;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
   };
 
   // Active section observer
