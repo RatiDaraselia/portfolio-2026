@@ -161,11 +161,11 @@ function nowTbilisi() {
 
 // ─── Projects ──────────────────────────────────────────────────────
 const PROJECTS = [
-  { id: 'axiom', name: 'Axiom', tag: 'SaaS · Analytics', date: 'Aug 2024', img: 'assets/axiom-thumbnail.jpg', link: '#' },
-  { id: 'garder', name: 'Garderobe', tag: 'E-commerce · Fashion', date: 'Jan 2026', img: 'assets/garderobe-thumbnail.jpg', link: '#' },
-  { id: 'visionos', name: 'Vision OS: Google Home UI Concept', tag: 'Spatial · visionOS', date: 'May 2025', img: 'assets/visionOS-thumbnail.jpg', link: '#', wide: true },
-  { id: 'solvaer', name: 'Solvær', tag: 'Spatial · visionOS', date: 'Oct 2025', img: 'assets/solvaer-thumbnail.jpg', link: '#' },
-  { id: 'nora', name: 'nora', tag: 'Agent · Productivity', date: 'Aug 2025', img: 'assets/nora-thumbnail.jpg', link: '#' },
+  { id: 'axiom', name: 'Axiom', tag: 'SaaS · Analytics', date: 'Aug 2024', img: 'assets/axiom-thumbnail.jpg', link: 'https://dribbble.com/shots/27310731-Axiom-Overview-Dashboard' },
+  { id: 'garder', name: 'Garderobe', tag: 'E-commerce · Fashion', date: 'Jan 2026', img: 'assets/garderobe-thumbnail-light.jpg', link: 'https://www.behance.net/gallery/247598239/GARDEROBE-UXUI-Luxury-Fashion-E-Commerce-Project' },
+  { id: 'visionos', name: 'Vision OS: Google Home UI Concept', tag: 'Spatial · visionOS', date: 'May 2025', img: 'assets/visionOS-thumbnail.jpg', link: 'https://dribbble.com/shots/26049461-Vision-OS-Google-Home-UI-Concept', wide: true },
+  { id: 'solvaer', name: 'Solvær', tag: 'Spatial · visionOS', date: 'Oct 2025', img: 'assets/solvaer-thumbnail-light.jpg', link: 'https://dribbble.com/shots/26724768-Solv-r-Catalog-of-Contemporary-Collectible-Design-Pieces' },
+  { id: 'nora', name: 'Nora', tag: 'Agent · Productivity', date: 'Aug 2025', img: 'assets/nora-thumbnail-light.jpg', link: 'https://dribbble.com/shots/26741553-nora-Collaborative-Workspace-and-Knowledge-Management-Tool' },
   { id: 'aquageo', name: 'AquaGeo', tag: 'Enterprise · GIS', date: 'Apr 2025', glyph: 'AQ', link: '#' },
   { id: 'halcyon', name: 'Halcyon', tag: 'Fintech · Mobile', date: 'Feb 2025', glyph: 'HA', link: '#' }];
 
@@ -203,7 +203,7 @@ function ProjectCard({ p, variant, revealDelay = 0 }) {
   return (
     <article className={`card reveal${p.wide ? ' card-wide' : ''}`}
       style={{ animationDelay: `${revealDelay}ms` }}>
-      <a href={p.link} className="thumb" aria-label={`${p.name}, open external`}>
+      <a href={p.link} className="thumb" target="_blank" rel="noopener noreferrer" aria-label={`${p.name}, open external`}>
         <ProjectThumb project={p} variant={variant} />
         <span className="thumb-label">View case · {p.tag}</span>
         <span className="ext" aria-hidden><Icon.ArrowUpRight size={12} /></span>
