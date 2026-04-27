@@ -18,14 +18,14 @@
 
   :root{
     --bg:#000;
-    --bg-1:#070707;
-    --bg-2:#0d0d0d;
-    --line:rgba(255,255,255,.08);
+    --bg-1:rgba(255,255,255,.03);
+    --bg-2:rgba(255,255,255,.05);
+    --line:rgba(255,255,255,.10);
     --line-2:rgba(255,255,255,.14);
     --fg:#fff;
-    --fg-2:rgba(255,255,255,.72);
-    --fg-3:rgba(255,255,255,.52);
-    --fg-4:rgba(255,255,255,.34);
+    --fg-2:rgba(255,255,255,.70);
+    --fg-3:rgba(255,255,255,.70);
+    --fg-4:rgba(255,255,255,.40);
     --fg-5:rgba(255,255,255,.18);
     --mono:"Suisse Int'l Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --sans:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
@@ -75,19 +75,19 @@
 
   /* Typography */
   .display{font-family:var(--display);font-weight:300;letter-spacing:-0.025em;line-height:1.02}
-  .mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+  .mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-4)}
   .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-4)}
 
   /* NAV */
   .nav-wrap{position:fixed;top:18px;left:0;right:0;z-index:100;display:flex;justify-content:center;pointer-events:none}
   .nav{pointer-events:auto;display:flex;align-items:center;gap:2px;padding:6px;
-    background:rgba(12,12,12,.72);border:.5px solid var(--line-2);border-radius:999px;
+    background:rgba(0,0,0,.72);border:.5px solid var(--line-2);border-radius:999px;
     -webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);
     box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 8px 30px rgba(0,0,0,.5);
     transition:transform .6s cubic-bezier(.4,0,.2,1), padding .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1)}
   .nav.condensed{padding:4px;transform:scale(.94)}
   .nav a.nav-link{position:relative;display:inline-flex;align-items:center;gap:6px;
-    padding:8px 14px;border-radius:999px;font-size:12.5px;color:var(--fg-3);
+    padding:8px 14px;border-radius:999px;font-size:12.5px;color:var(--fg-4);
     letter-spacing:-.005em;
     transition:color .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1),
       padding-left .4s cubic-bezier(.4,0,.2,1), padding-right .4s cubic-bezier(.4,0,.2,1)}
@@ -132,7 +132,7 @@
     padding:4px 6px;border-radius:999px;background:transparent;
     border:.5px solid rgba(255,255,255,.15);
     font-family:"Suisse Int'l",var(--sans);font-weight:400;font-size:10px;
-    letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);
+    letter-spacing:.08em;text-transform:uppercase;color:var(--fg-4);
     line-height:1;margin-right:10px}
 
   /* Hero */
@@ -155,7 +155,7 @@
 
   h1.hero-title{font-family:var(--display);font-weight:400;letter-spacing:-.03em;
     font-size:clamp(40px,6.2vw,72px);line-height:1.02;margin:0 0 28px;overflow-wrap:break-word}
-  h1.hero-title em{font-style:normal;color:rgba(255,255,255,.22);font-weight:400}
+  h1.hero-title em{font-style:normal;color:inherit;font-weight:400}
 
   .thesis{font-family:var(--display);font-weight:300;color:var(--fg-2);
     font-size:clamp(17px,1.4vw,19px);line-height:1.55;letter-spacing:-.01em;max-width:640px;margin:0 0 32px;
@@ -249,13 +249,23 @@
 
   /* Career list */
   .list{border-top:1px solid var(--line)}
-  .list .item{display:grid;grid-template-columns:1.3fr .8fr .9fr 96px;gap:20px;align-items:center;
-    min-height:88px;padding:0;border-bottom:1px solid var(--line);transition:padding .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1)}
+  .list .item{display:grid;grid-template-columns:1.3fr 1.1fr .7fr 100px;gap:16px;align-items:start;
+    min-height:88px;padding:18px 0 18px;border-bottom:1px solid var(--line);transition:padding .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1)}
   .list .item:hover{background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);padding-left:6px;padding-right:6px}
   .list .item .role{font-family:var(--display);font-size:18px;font-weight:400;letter-spacing:0}
   .list .item .co{color:var(--fg-3);font-size:14px}
-  .list .item .when{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4)}
-  .list .item .type{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4);text-align:right}
+  .list .item .when{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4);padding-top:5px}
+  .list .item .type{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4);text-align:right;padding-top:5px}
+  /* Nested sub-list (Path courses) */
+  .item-subs{grid-column:2/-1;border-top:1px solid rgba(255,255,255,.05);
+    padding:0 0 0;margin-top:8px;display:flex;flex-direction:column;gap:0}
+  .item-sub{display:flex;justify-content:space-between;align-items:center;
+    font-size:10px;color:rgba(255,255,255,.40);line-height:1;
+    padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+  .item-sub:last-child{border-bottom:none}
+  .item-sub .sub-name{font-family:var(--sans);font-weight:500;letter-spacing:-.005em}
+  .item-sub .sub-idx{font-family:var(--mono);font-size:10px;letter-spacing:.10em;
+    margin-left:32px;flex-shrink:0}
 
   /* Benefits */
   .benefits{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}

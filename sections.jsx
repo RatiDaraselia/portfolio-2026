@@ -252,10 +252,20 @@ const CAREER = [
   { role: 'Product Designer', co: 'Solvær — Spatial / visionOS', when: '2022 — 2023', type: 'Contract' },
   { role: 'UI/UX Designer', co: 'nora — Agent Productivity', when: '2021 — 2022', type: 'Freelance' }];
 
+const GOOGLE_UX_COURSES = [
+  { idx: '01', name: 'Foundations of User Experience (UX) Design' },
+  { idx: '02', name: 'Start the UX Design Process: Empathize, Define, and Ideate' },
+  { idx: '03', name: 'Build Wireframes and Low-Fidelity Prototypes' },
+  { idx: '04', name: 'Conduct UX Research and Test Early Concepts' },
+  { idx: '05', name: 'Create High-Fidelity Designs and Prototypes in Figma' },
+  { idx: '06', name: 'Build Dynamic User Interfaces (UI) for Websites' },
+  { idx: '07', name: 'Design a User Experience for Social Good & Prepare for Jobs' },
+  { idx: '08', name: 'Accelerate Your Job Search with AI' }];
+
 const EDU = [
-  { role: 'Computer Science, B.Sc.', co: 'SANGU — St. Andrew\'s University', when: '2018 — 2022', type: 'Education' },
-  { role: 'Google UX Design Professional', co: 'Coursera · Google', when: '2021', type: 'Certificate' },
-  { role: <>Interaction Design<br/>Foundation</>, co: 'UX Research & Strategy', when: '2022', type: 'Certificate' }];
+  { role: <>Interaction Design<br/>Foundation</>, co: 'UX Research & Strategy', when: '2022', type: 'Certificate' },
+  { role: 'Google UX Design Professional', co: 'Coursera · Google', when: '2021', type: 'Certificate', subs: GOOGLE_UX_COURSES },
+  { role: 'Computer Science, B.Sc.', co: 'SANGU — St. Andrew\'s University', when: '2018 — 2022', type: 'Education' }];
 
 
 function CoCell({ value }) {
@@ -302,6 +312,16 @@ function Career() {
               <CoCell value={r.co} />
               <div className="when">{r.when}</div>
               <div className="type">{r.type}</div>
+              {r.subs && (
+                <div className="item-subs">
+                  {r.subs.map((s) =>
+                    <div className="item-sub" key={s.idx}>
+                      <span className="sub-name">{s.name}</span>
+                      <span className="sub-idx">[{s.idx}]</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
