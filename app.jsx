@@ -1,4 +1,130 @@
 // App entrypoint — wires Tweaks, scroll spy, spotlight, toast
+const { motion, useMotionValue, useSpring } = window.Motion;
+
+function CursorDot({ enabled }) {
+  const cursorX = useMotionValue(-200);
+  const cursorY = useMotionValue(-200);
+  const springConfig = { damping: 33, stiffness: 220, mass: 0.5 };
+  const smoothX = useSpring(cursorX, springConfig);
+  const smoothY = useSpring(cursorY, springConfig);
+
+  const dotRef   = React.useRef(null);
+  const lensRef  = React.useRef(null);
+
+  React.useEffect(() => {
+    const html = document.documentElement;
+    const dot  = dotRef.current;
+    const lensImg = lensRef.current;
+    if (!dot) return;
+
+    if (!enabled) {
+      dot.classList.remove('ready');
+      html.classList.remove('has-custom-cursor');
+      return;
+    }
+    html.classList.add('has-custom-cursor');
+
+    let seenFirstMove = false;
+    let currentThumb  = null;
+    const MAG = 2, LW = 100, LH = 50;
+
+    const updateLens = () => {
+      if (!currentThumb || !lensImg) return;
+      const x = smoothX.get(), y = smoothY.get();
+      const r = currentThumb.getBoundingClientRect();
+      lensImg.style.width  = (r.width  * MAG) + 'px';
+      lensImg.style.height = (r.height * MAG) + 'px';
+      lensImg.style.left   = (LW / 2 - (x - r.left) * MAG) + 'px';
+      lensImg.style.top    = (LH / 2 - (y - r.top)  * MAG) + 'px';
+    };
+    const unsubX = smoothX.on('change', updateLens);
+    const unsubY = smoothY.on('change', updateLens);
+
+    const onMove = (e) => {
+      if (!seenFirstMove) {
+        seenFirstMove = true;
+        smoothX.jump(e.clientX);
+        smoothY.jump(e.clientY);
+      }
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+      dot.classList.add('ready');
+    };
+
+    const hoverSel = 'a, button, .nav-link, .btn, [role="button"]';
+    const clickSel = 'a, button, .btn, [role="button"]';
+    const tgSel    = '.btn-tg';
+    const thumbSel = '.card .thumb';
+
+    const onOver = (e) => {
+      if (e.target.closest && e.target.closest(thumbSel)) {
+        const thumb = e.target.closest(thumbSel);
+        const img   = thumb.querySelector('img');
+        if (img && lensImg) lensImg.src = img.src;
+        currentThumb = img ? thumb : null;
+        if (currentThumb) { dot.classList.add('lens'); return; }
+      }
+      if (e.target.closest && e.target.closest('.card')) return;
+      const isClick = e.target.closest && e.target.closest(clickSel);
+      if (e.target.closest && e.target.closest(hoverSel) && !isClick) dot.classList.add('hover');
+      if (isClick) dot.classList.add('hide');
+      if (e.target.closest && e.target.closest(tgSel)) dot.classList.add('on-tg');
+    };
+    const onOut = (e) => {
+      if (e.target.closest && e.target.closest(thumbSel)) {
+        const stillIn = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(thumbSel);
+        if (!stillIn) {
+          dot.classList.remove('lens');
+          currentThumb = null;
+          if (lensImg) lensImg.src = '';
+        }
+        return;
+      }
+      if (e.target.closest && e.target.closest('.card')) return;
+      if (e.target.closest && e.target.closest(hoverSel)) dot.classList.remove('hover');
+      if (e.target.closest && e.target.closest(clickSel)) dot.classList.remove('hide');
+      if (e.target.closest && e.target.closest(tgSel))    dot.classList.remove('on-tg');
+    };
+    const onDown  = () => dot.classList.add('press');
+    const onUp    = () => dot.classList.remove('press');
+    const onLeave = () => dot.classList.remove('ready');
+    const onEnter = () => dot.classList.add('ready');
+
+    window.addEventListener('mousemove',  onMove);
+    window.addEventListener('mouseover',  onOver);
+    window.addEventListener('mouseout',   onOut);
+    window.addEventListener('mousedown',  onDown);
+    window.addEventListener('mouseup',    onUp);
+    document.addEventListener('mouseleave', onLeave);
+    document.addEventListener('mouseenter', onEnter);
+
+    return () => {
+      unsubX(); unsubY();
+      window.removeEventListener('mousemove',  onMove);
+      window.removeEventListener('mouseover',  onOver);
+      window.removeEventListener('mouseout',   onOut);
+      window.removeEventListener('mousedown',  onDown);
+      window.removeEventListener('mouseup',    onUp);
+      document.removeEventListener('mouseleave', onLeave);
+      document.removeEventListener('mouseenter', onEnter);
+      html.classList.remove('has-custom-cursor');
+      dot.classList.remove('ready', 'hover', 'press', 'on-tg', 'hide', 'lens');
+      currentThumb = null;
+      if (lensImg) lensImg.src = '';
+    };
+  }, [enabled, cursorX, cursorY, smoothX, smoothY]);
+
+  return (
+    <motion.div
+      style={{ x: smoothX, y: smoothY, position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 1500 }}
+      aria-hidden="true"
+    >
+      <div ref={dotRef} className="cursor" id="cursor">
+        <img ref={lensRef} id="cursor-lens-img" alt="" />
+      </div>
+    </motion.div>
+  );
+}
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "heroLayout": "editorial",
   "cardVariant": "stripes",
@@ -59,114 +185,6 @@ function App() {
     return () => io.disconnect();
   }, []);
 
-  // Custom blend-mode circle cursor
-  React.useEffect(() => {
-    const dot = document.getElementById('cursor');
-    const lensImg = document.getElementById('cursor-lens-img');
-    const html = document.documentElement;
-    if (!dot) return;
-    if (!t.spotlight) {
-      dot.classList.remove('ready');
-      html.classList.remove('has-custom-cursor');
-      return;
-    }
-    html.classList.add('has-custom-cursor');
-
-    let targetX = 0, targetY = 0;
-    let curX = 0, curY = 0;
-    let rafId = null;
-    let seenFirstMove = false;
-    let currentThumb = null;
-    const MAG = 2, LW = 100, LH = 50;
-
-    const tick = () => {
-      curX += (targetX - curX) * 0.25;
-      curY += (targetY - curY) * 0.25;
-      dot.style.transform = `translate3d(${curX}px,${curY}px,0) translate(-50%,-50%)`;
-      if (currentThumb && lensImg) {
-        const r = currentThumb.getBoundingClientRect();
-        lensImg.style.width  = (r.width  * MAG) + 'px';
-        lensImg.style.height = (r.height * MAG) + 'px';
-        lensImg.style.left   = (LW / 2 - (curX - r.left) * MAG) + 'px';
-        lensImg.style.top    = (LH / 2 - (curY - r.top)  * MAG) + 'px';
-      }
-      rafId = requestAnimationFrame(tick);
-    };
-
-    const onMove = (e) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-      if (!seenFirstMove) {
-        // Snap visual position to hardware position on first move so the
-        // dot doesn't lerp in from the top-left corner of the viewport.
-        curX = targetX;
-        curY = targetY;
-        seenFirstMove = true;
-        rafId = requestAnimationFrame(tick);
-      }
-      dot.classList.add('ready');
-    };
-
-    const hoverSel = 'a, button, .nav-link, .btn, [role="button"]';
-    const clickSel = 'a, button, .btn, [role="button"]';
-    const tgSel = '.btn-tg';
-    const thumbSel = '.card .thumb';
-    const onOver = (e) => {
-      if (e.target.closest && e.target.closest(thumbSel)) {
-        const thumb = e.target.closest(thumbSel);
-        const img = thumb.querySelector('img');
-        if (img && lensImg) { lensImg.src = img.src; }
-        currentThumb = img ? thumb : null;
-        if (currentThumb) { dot.classList.add('lens'); return; }
-      }
-      if (e.target.closest && e.target.closest('.card')) return;
-      const isClick = e.target.closest && e.target.closest(clickSel);
-      if (e.target.closest && e.target.closest(hoverSel) && !isClick) dot.classList.add('hover');
-      if (isClick) dot.classList.add('hide');
-      if (e.target.closest && e.target.closest(tgSel)) dot.classList.add('on-tg');
-    };
-    const onOut  = (e) => {
-      if (e.target.closest && e.target.closest(thumbSel)) {
-        const stillInThumb = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(thumbSel);
-        if (!stillInThumb) {
-          dot.classList.remove('lens');
-          currentThumb = null;
-          if (lensImg) lensImg.src = '';
-        }
-        return;
-      }
-      if (e.target.closest && e.target.closest('.card')) return;
-      if (e.target.closest && e.target.closest(hoverSel)) dot.classList.remove('hover');
-      if (e.target.closest && e.target.closest(clickSel)) dot.classList.remove('hide');
-      if (e.target.closest && e.target.closest(tgSel)) dot.classList.remove('on-tg');
-    };
-    const onDown = () => dot.classList.add('press');
-    const onUp   = () => dot.classList.remove('press');
-    const onLeave = () => dot.classList.remove('ready');
-    const onEnter = () => dot.classList.add('ready');
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseover', onOver);
-    window.addEventListener('mouseout', onOut);
-    window.addEventListener('mousedown', onDown);
-    window.addEventListener('mouseup', onUp);
-    document.addEventListener('mouseleave', onLeave);
-    document.addEventListener('mouseenter', onEnter);
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseover', onOver);
-      window.removeEventListener('mouseout', onOut);
-      window.removeEventListener('mousedown', onDown);
-      window.removeEventListener('mouseup', onUp);
-      document.removeEventListener('mouseleave', onLeave);
-      document.removeEventListener('mouseenter', onEnter);
-      html.classList.remove('has-custom-cursor');
-      dot.classList.remove('ready', 'hover', 'press', 'on-tg', 'hide', 'lens');
-      currentThumb = null;
-      if (lensImg) lensImg.src = '';
-    };
-  }, [t.spotlight]);
-
   // Scroll reveal
   React.useEffect(() => {
     const els = document.querySelectorAll('.reveal');
@@ -193,7 +211,7 @@ function App() {
       <Benefits />
       <Footer />
 
-
+      <CursorDot enabled={t.spotlight} />
 
       <TweaksPanel title="Tweaks">
         <TweakSection label="Hero" />
