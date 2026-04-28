@@ -4,12 +4,13 @@ const { motion, useMotionValue, useSpring } = window.Motion;
 function CursorDot({ enabled }) {
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
-  const springConfig = { damping: 33, stiffness: 220, mass: 0.5 };
+  const springConfig = { damping: 35, stiffness: 200, mass: 0.8 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
 
   const dotRef   = React.useRef(null);
   const lensRef  = React.useRef(null);
+  const wrapRef  = React.useRef(null);
 
   React.useEffect(() => {
     const html = document.documentElement;
@@ -56,19 +57,22 @@ function CursorDot({ enabled }) {
     const tgSel    = '.btn-tg';
     const thumbSel = '.card .thumb';
 
+    const wrap = wrapRef.current;
+    const setBlend = (mode) => { if (wrap) wrap.style.mixBlendMode = mode; };
+
     const onOver = (e) => {
       if (e.target.closest && e.target.closest(thumbSel)) {
         const thumb = e.target.closest(thumbSel);
         const img   = thumb.querySelector('img');
         if (img && lensImg) lensImg.src = img.src;
         currentThumb = img ? thumb : null;
-        if (currentThumb) { dot.classList.add('lens'); return; }
+        if (currentThumb) { dot.classList.add('lens'); setBlend('normal'); return; }
       }
       if (e.target.closest && e.target.closest('.card')) return;
       const isClick = e.target.closest && e.target.closest(clickSel);
       if (e.target.closest && e.target.closest(hoverSel) && !isClick) dot.classList.add('hover');
       if (isClick) dot.classList.add('hide');
-      if (e.target.closest && e.target.closest(tgSel)) dot.classList.add('on-tg');
+      if (e.target.closest && e.target.closest(tgSel)) { dot.classList.add('on-tg'); setBlend('normal'); }
     };
     const onOut = (e) => {
       if (e.target.closest && e.target.closest(thumbSel)) {
@@ -77,13 +81,14 @@ function CursorDot({ enabled }) {
           dot.classList.remove('lens');
           currentThumb = null;
           if (lensImg) lensImg.src = '';
+          setBlend('difference');
         }
         return;
       }
       if (e.target.closest && e.target.closest('.card')) return;
       if (e.target.closest && e.target.closest(hoverSel)) dot.classList.remove('hover');
       if (e.target.closest && e.target.closest(clickSel)) dot.classList.remove('hide');
-      if (e.target.closest && e.target.closest(tgSel))    dot.classList.remove('on-tg');
+      if (e.target.closest && e.target.closest(tgSel))    { dot.classList.remove('on-tg'); setBlend('difference'); }
     };
     const onDown  = () => dot.classList.add('press');
     const onUp    = () => dot.classList.remove('press');
@@ -116,7 +121,8 @@ function CursorDot({ enabled }) {
 
   return (
     <motion.div
-      style={{ x: smoothX, y: smoothY, position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 1500 }}
+      ref={wrapRef}
+      style={{ x: smoothX, y: smoothY, position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 9999, mixBlendMode: 'difference' }}
       aria-hidden="true"
     >
       <div ref={dotRef} className="cursor" id="cursor">

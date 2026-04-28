@@ -48,7 +48,7 @@
 
   /* Blend-mode circle cursor */
   .cursor{width:20px;height:20px;border-radius:999px;
-    background:#fff;mix-blend-mode:difference;
+    background:#fff;
     transform:translate(-50%,-50%);transition:width .25s cubic-bezier(.2,.8,.2,1),
       height .25s cubic-bezier(.2,.8,.2,1), opacity .2s ease, background .2s ease;
     will-change:width,height;opacity:0}
@@ -56,11 +56,11 @@
   .cursor.ready.hide{opacity:0}
   .cursor.hover{width:48px;height:48px}
   .cursor.press{width:14px;height:14px}
-  /* On Telegram-blue surfaces, drop blend-mode (avoids dirty-orange invert) */
-  .cursor.on-tg{mix-blend-mode:normal;background:transparent;
+  /* On Telegram-blue surfaces, drop blend-mode (avoids dirty-orange invert) — JS toggles parent mix-blend-mode */
+  .cursor.on-tg{background:transparent;
     border:1.5px solid #fff;box-shadow:none}
   .cursor.lens{width:100px;height:50px;border-radius:9999px;background:transparent;
-    mix-blend-mode:normal;border:0.5px solid rgba(255,255,255,0.14);overflow:hidden}
+    border:0.5px solid rgba(255,255,255,0.14);overflow:hidden}
   #cursor-lens-img{position:absolute;display:none;pointer-events:none;top:0;left:0}
   .cursor.lens #cursor-lens-img{display:block}
   @media (hover:none){.cursor{display:none}}
