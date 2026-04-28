@@ -239,14 +239,12 @@ function Projects({ variant = 'stripes', density = 'regular', count = 4 }) {
 
 // ─── Career ────────────────────────────────────────────────────────
 const CAREER = [
-  { role: 'Visual Designer',        co: 'AQUA GEO — FMCG / Beverage',          when: 'Mar 2026 — Present',  type: 'Contract'      },
-  { role: 'Graphic Designer',       co: 'Cubicle — Design / Creative Agency',  when: 'Feb 2026 — Present',  type: 'Contract'      },
-  { role: 'Product Designer',       co: 'Garderobe — Fashion / Retail',         when: '2025 — 2026',         type: 'Contract'      },
-  { role: 'UI/UX Designer',         co: 'Dribbble — Various Freelance Projects', when: '2021 — Present',      type: 'Freelance'     },
-  { role: 'UI/UX Designer',         co: 'Premium Jewelry Brand — E-commerce',   when: '2024',                type: 'Freelance'     },
-  { role: 'UI/UX Designer',         co: 'MASTERY™ — Early-Stage AI Startup',    when: '2022',                type: 'Equity' },
-  { role: 'Sales Manager',          co: 'ALTA — Consumer Electronics',          when: '2023 — 2024',         type: 'Full-time'     },
-  { role: 'Electronics Specialist', co: 'zoommer — Consumer Electronics',       when: '2021 — 2023',         type: 'Full-time'     }];
+  { role: 'Visual Designer',  co: 'AQUA GEO — FMCG / Beverage',           when: 'Mar 2026 — Present', type: 'Contract'  },
+  { role: 'Graphic Designer', co: 'Cubicle — Design / Creative Agency',   when: 'Feb 2026 — Present', type: 'Contract'  },
+  { role: 'UI/UX Designer',   co: 'Dribbble — Various Freelance Projects', when: 'Nov 2023 — Present',  type: 'Freelance' },
+  { role: 'Product Designer', co: 'Garderobe — Fashion / Retail',          when: '2025 — 2026',        type: 'Contract'  },
+  { role: 'UI/UX Designer',   co: 'Premium Jewelry Brand — E-commerce',    when: '2024',               type: 'Freelance' },
+  { role: 'UI/UX Designer',   co: 'MASTERY™ — Early-Stage AI Startup',     when: '2022',               type: 'Equity'    }];
 
 const GOOGLE_UX_COURSES = [
   { idx: '01', name: 'Foundations of User Experience (UX) Design' },
@@ -321,6 +319,15 @@ function Career() {
               <div className="type">{r.type}</div>
             </div>
           )}
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 24 }}>
+          <a className="btn btn-sm" href="mailto:ratidaraselia.ui@gmail.com">
+            <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={10} /></span>
+          </a>
+          <a className="btn btn-sm btn-tg" href="https://t.me/Bagratdaraselia" target="_blank" rel="noopener noreferrer">
+            <Icon.Telegram /> Telegram <DiagArrow size={10} />
+          </a>
         </div>
 
         <div style={{ height: 208 }} />
