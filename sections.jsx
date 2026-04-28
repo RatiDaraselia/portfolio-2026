@@ -30,7 +30,6 @@ function Nav({ active, onNav }) {
           <a key={it.id} href={`#${it.id}`}
             className={`nav-link ${active === it.id ? 'active' : ''}`}
             onClick={(e) => { e.preventDefault(); onNav(it.id); }}>
-            <span className="dot" aria-hidden />
             {it.label}
           </a>
         )}
