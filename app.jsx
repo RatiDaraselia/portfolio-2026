@@ -191,18 +191,43 @@ function App() {
     return () => io.disconnect();
   }, []);
 
-  // Scroll reveal
+  // Scroll reveal — section-scoped sequential cascade
+  // Instead of observing each .reveal individually (which lets bottom elements
+  // fire before top ones on fast scroll), we observe each section/footer once.
+  // When a section enters the viewport, its .reveal children animate in strict
+  // DOM order with enforced stagger, guaranteeing a top-down cascade.
   React.useEffect(() => {
-    const els = document.querySelectorAll('.reveal');
-    if (!els.length) return;
+    const STAGGER = 120; // ms between each child reveal
+
+    // Collect all section-level containers that hold .reveal elements
+    const containers = document.querySelectorAll('section, footer');
+    if (!containers.length) return;
+
     const io = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('visible');
+
+        // Gather all un-revealed .reveal children in DOM order
+        const reveals = Array.from(
+          entry.target.querySelectorAll('.reveal:not(.visible)')
+        );
+        if (!reveals.length) return;
+
+        // Enforce strict sequential stagger — override any inline animationDelay
+        reveals.forEach((el, i) => {
+          el.style.animationDelay = `${i * STAGGER}ms`;
+          el.classList.add('visible');
+        });
+
+        // Section is done — stop watching it
         io.unobserve(entry.target);
       });
-    }, { rootMargin: '0px', threshold: 0 });
-    els.forEach(el => io.observe(el));
+    }, { rootMargin: '0px 0px -60px 0px', threshold: 0 });
+
+    containers.forEach(c => {
+      // Only observe containers that actually have .reveal children
+      if (c.querySelector('.reveal')) io.observe(c);
+    });
     return () => io.disconnect();
   }, []);
 

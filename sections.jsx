@@ -198,10 +198,9 @@ function ProjectThumb({ project, variant }) {
 
 }
 
-function ProjectCard({ p, variant, revealDelay = 0 }) {
+function ProjectCard({ p, variant }) {
   return (
-    <article className={`card reveal${p.wide ? ' card-wide' : ''}`}
-      style={{ animationDelay: `${revealDelay}ms` }}>
+    <article className={`card reveal${p.wide ? ' card-wide' : ''}`}>
       <a href={p.link} className="thumb" target="_blank" rel="noopener noreferrer" aria-label={`${p.name}, open external`}>
         <ProjectThumb project={p} variant={variant} />
         <span className="thumb-label">View case · {p.tag}</span>
@@ -228,7 +227,7 @@ function Projects({ variant = 'stripes', density = 'regular', count = 4 }) {
         </div>
         <div className="project-grid" data-density={density}>
           {PROJECTS.slice(0, count).map((p, i) =>
-            <ProjectCard key={p.id} p={p} variant={variant} revealDelay={(i + 1) * 150} />
+            <ProjectCard key={p.id} p={p} variant={variant} />
           )}
         </div>
       </div>
@@ -311,7 +310,7 @@ function Career() {
         </div>
         <div className="list" role="list">
           {CAREER.map((r, i) =>
-            <div className="item reveal" role="listitem" key={i} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
+            <div className="item reveal" role="listitem" key={i}>
               <div className="role">{r.role}</div>
               <CoCell value={r.co} />
               <div className="when">{r.when}</div>
@@ -337,7 +336,7 @@ function Career() {
         </div>
         <div className="list" role="list">
           {EDU.map((r, i) =>
-            <div className="item reveal" role="listitem" key={i} style={{ animationDelay: `${(i + 1) * 150}ms` }}>
+            <div className="item reveal" role="listitem" key={i}>
               <div className="role">{r.role}</div>
               <CoCell value={r.co} />
               <div className="when">{r.when}</div>
@@ -640,10 +639,10 @@ function Footer() {
       <div className="wrap">
         <div className="footer-top">
           <div className="eyebrow reveal" style={{ marginBottom: 36 }}>[ 05 — Get in Touch ]</div>
-          <h2 className="reveal" style={{ animationDelay: '150ms' }}>Let's get in touch.</h2>
-          <p className="reveal" style={{ animationDelay: '300ms' }}>Currently taking on a small number of Q3 engagements.
+          <h2 className="reveal">Let's get in touch.</h2>
+          <p className="reveal">Currently taking on a small number of Q3 engagements.
             I reply to every inbound within 24 hours.</p>
-          <div className="footer-cta-zone reveal" style={{ animationDelay: '450ms' }}>
+          <div className="footer-cta-zone reveal">
             <div className="cta-canvas-wrap" aria-hidden="true"><FooterCanvas /></div>
             <a className="btn btn-solid" href="mailto:ratidaraselia.ui@gmail.com">
               <Icon.Mail /> Get in touch <span className="arrow"><Icon.Arrow size={11}/></span>
@@ -662,7 +661,7 @@ function Footer() {
           </div>
         </div>
 
-        <div className="foot-cols reveal" style={{ animationDelay: '150ms' }}>
+        <div className="foot-cols reveal">
           <div className="col">
             <div className="h">/ SECTIONS</div>
             <a href="#about">About <span className="ic"><Icon.ArrowElbowDownLeft size={10} /></span></a>
