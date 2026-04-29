@@ -4,7 +4,7 @@ const { motion, useMotionValue, useSpring } = window.Motion;
 function CursorDot({ enabled }) {
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
-  const springConfig = { damping: 35, stiffness: 200, mass: 0.8 };
+  const springConfig = { damping: 29.5, stiffness: 260, mass: 0.6 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
 
