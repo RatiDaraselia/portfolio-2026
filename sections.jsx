@@ -577,9 +577,13 @@ function readFieldColor() {
   return [1, 1, 1];
 }
 
-// Light needs a much lower per-particle alpha: normal-blended dark points
-// accumulate density fast and tip into looking like static.
-function fieldAlpha(theme) { return theme === 'light' ? 0.17 : 0.85; }
+// Light still needs a lower per-particle alpha than dark — normal-blended dark
+// points accumulate fast — but not as low as the maths suggests. Each particle
+// is gl_PointSize 1.0 in DEVICE pixels, so on a retina display it covers well
+// under one CSS pixel and gets averaged away against a near-white ground.
+// Additive blending masks that in dark; normal blending does not. 0.50 is the
+// point where the curl structure reads as mist; past ~0.65 it becomes speckle.
+function fieldAlpha(theme) { return theme === 'light' ? 0.50 : 0.85; }
 
 function FooterCanvas() {
   const ref = React.useRef(null);
