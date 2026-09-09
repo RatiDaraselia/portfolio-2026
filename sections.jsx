@@ -1,3 +1,31 @@
+// Subscribes to the `themechange` event dispatched by the blocking head script,
+// which stays the single source of truth for the active theme.
+function useTheme() {
+  const [theme, setTheme] = React.useState(
+    () => (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme')) || 'dark');
+  React.useEffect(() => {
+    const on = (e) => setTheme(e.detail.theme);
+    window.addEventListener('themechange', on);
+    return () => window.removeEventListener('themechange', on);
+  }, []);
+  return theme;
+}
+
+function ThemeToggle() {
+  const theme = useTheme();
+  const isLight = theme === 'light';
+  const next = isLight ? 'dark' : 'light';
+  return (
+    <button type="button" className="nav-theme"
+      onClick={() => window.__setTheme(next)}
+      aria-label={`Switch to ${next} theme`}
+      title={`Switch to ${next} theme`}
+      aria-pressed={isLight}>
+      {isLight ? <Icon.Moon size={15} /> : <Icon.Sun size={15} />}
+    </button>);
+
+}
+
 function DiagArrow({ size = 11 }) {
   return (
     <span className="diag-arrow">
@@ -33,6 +61,8 @@ function Nav({ active, onNav }) {
             {it.label}
           </a>
         )}
+        <span className="nav-sep" aria-hidden />
+        <ThemeToggle />
       </nav>
     </div>);
 
@@ -160,20 +190,28 @@ function nowTbilisi() {
 
 // ─── Projects ──────────────────────────────────────────────────────
 const PROJECTS = [
-  { id: 'axiom',   name: 'Axiom',                          tag: 'SaaS · Analytics',        pill: 'Concept',    img: 'assets/axiom-thumbnail.jpg',          link: 'https://dribbble.com/shots/27310731-Axiom-Overview-Dashboard' },
+  { id: 'axiom',   name: 'Axiom',                          tag: 'SaaS · Analytics',        pill: 'Concept',    img: 'assets/axiom-thumbnail-light.jpg',      link: 'https://dribbble.com/shots/27310731-Axiom-Overview-Dashboard' },
   { id: 'garder',  name: 'Garderobe',                      tag: 'E-commerce · Fashion',     pill: 'Case Study', img: 'assets/garderobe-thumbnail-light.jpg', link: 'https://www.behance.net/gallery/247598239/GARDEROBE-UXUI-Luxury-Fashion-E-Commerce-Project' },
-  { id: 'visionos',name: 'Vision OS: Google Home UI Concept', tag: 'Spatial · visionOS',   pill: 'Concept',    img: 'assets/visionOS-thumbnail.jpg',        link: 'https://dribbble.com/shots/26049461-Vision-OS-Google-Home-UI-Concept', wide: true },
+  { id: 'visionos',name: 'Vision OS: Google Home UI Concept', tag: 'Spatial · visionOS',   pill: 'Concept',    img: 'assets/visionOS-thumbnail.jpg',         link: 'https://dribbble.com/shots/26049461-Vision-OS-Google-Home-UI-Concept', wide: true },
   { id: 'solvaer', name: 'Solvær',                         tag: 'Contemporary · ecommerce', pill: 'Concept',    img: 'assets/solvaer-thumbnail-light.jpg',   link: 'https://dribbble.com/shots/26724768-Solv-r-Catalog-of-Contemporary-Collectible-Design-Pieces' },
   { id: 'nora',    name: 'Nora',                           tag: 'Agent · Productivity',     pill: 'Concept',    img: 'assets/nora-thumbnail-light.jpg',      link: 'https://dribbble.com/shots/26741553-nora-Collaborative-Workspace-and-Knowledge-Management-Tool' },
   { id: 'aquageo', name: 'AquaGeo',                        tag: 'Enterprise · GIS',         pill: 'Concept',    glyph: 'AQ', link: '#' },
   { id: 'halcyon', name: 'Halcyon',                        tag: 'Fintech · Mobile',         pill: 'Concept',    glyph: 'HA', link: '#' }];
 
 
-function ProjectThumb({ project, variant }) {
+// Data-driven per-theme src — keeps the JSX free of <picture> scaffolding.
+// No project needs a variant today: the -light assets (light backdrop) read
+// correctly on both grounds, popping against #000 and settling into #FBFBFB.
+// Kept for any future asset that does, via an `imgLight` key on the project.
+function thumbSrc(project, theme) {
+  return (theme === 'light' && project.imgLight) ? project.imgLight : project.img;
+}
+
+function ProjectThumb({ project, variant, theme }) {
   if (project.img) {
     return (
       <div className="thumb-inner">
-        <img src={project.img} alt={project.name}
+        <img src={thumbSrc(project, theme)} alt={project.name}
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
       </div>);
   }
@@ -199,10 +237,14 @@ function ProjectThumb({ project, variant }) {
 }
 
 function ProjectCard({ p, variant }) {
+  const theme = useTheme();
+  // Photographic thumbs need an edge on a near-white page — the light-backdrop
+  // ones dissolve into it entirely. Token-driven, so it is transparent in dark.
+  const ring = p.img ? ' thumb-ring' : '';
   return (
     <article className={`card reveal${p.wide ? ' card-wide' : ''}`}>
-      <a href={p.link} className="thumb" target="_blank" rel="noopener noreferrer" aria-label={`${p.name}, open external`}>
-        <ProjectThumb project={p} variant={variant} />
+      <a href={p.link} className={`thumb${ring}`} target="_blank" rel="noopener noreferrer" aria-label={`${p.name}, open external`}>
+        <ProjectThumb project={p} variant={variant} theme={theme} />
         <span className="thumb-label">View case · {p.tag}</span>
         <span className="ext" aria-hidden><Icon.ArrowUpRight size={12} /></span>
       </a>
@@ -267,7 +309,7 @@ function CoCell({ value }) {
   return (
     <div className="co">
       <div style={{ color:'var(--fg-2)', lineHeight:1.2 }}>{value.slice(0, idx)} —</div>
-      <div style={{ color:'rgba(255,255,255,0.4)', fontSize:12, lineHeight:1.2 }}>{value.slice(idx + sep.length)}</div>
+      <div style={{ color:'var(--fg-4)', fontSize:12, lineHeight:1.2 }}>{value.slice(idx + sep.length)}</div>
     </div>
   );
 }
@@ -486,6 +528,8 @@ const VERT = `
 
 const FRAG = `
   uniform float uTime;
+  uniform vec3  uColor;
+  uniform float uAlpha;
   varying vec2  vNDC;
   varying float vRand;
 
@@ -512,11 +556,30 @@ const FRAG = `
     // Per-particle shimmer
     float shim = 0.30 + 0.70 * (0.5 + 0.5 * sin(uTime * (0.7 + vRand * 3.2) + vRand * 6.2832));
 
-    float final = mask * shim * 0.85;
+    float final = mask * shim * uAlpha;
     if (final <= 0.008) discard;
-    gl_FragColor = vec4(1.0, 1.0, 1.0, final);
+    gl_FragColor = vec4(uColor, final);
   }
 `;
+
+// The field's colour comes from --fg at draw time. Blending has to switch too:
+// AdditiveBlending only ever brightens, so dark particles on a near-white page
+// would be mathematically invisible no matter what colour we hand the shader.
+function readFieldColor() {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue('--fg').trim();
+  let m = raw.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (m) {
+    const h = m[1].length === 3 ? m[1].replace(/./g, (c) => c + c) : m[1];
+    return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];
+  }
+  m = raw.match(/[\d.]+/g);
+  if (m && m.length >= 3) return [m[0] / 255, m[1] / 255, m[2] / 255];
+  return [1, 1, 1];
+}
+
+// Light needs a much lower per-particle alpha: normal-blended dark points
+// accumulate density fast and tip into looking like static.
+function fieldAlpha(theme) { return theme === 'light' ? 0.17 : 0.85; }
 
 function FooterCanvas() {
   const ref = React.useRef(null);
@@ -560,13 +623,18 @@ function FooterCanvas() {
       geo.setAttribute('aSeed',    new THREE.BufferAttribute(seeds, 3));
       geo.setAttribute('aRand',    new THREE.BufferAttribute(rands, 4));
 
+      const theme0 = document.documentElement.getAttribute('data-theme') || 'dark';
       const mat = new THREE.ShaderMaterial({
         vertexShader:   VERT,
         fragmentShader: FRAG,
-        uniforms:       { uTime: { value: 0 } },
+        uniforms: {
+          uTime:  { value: 0 },
+          uColor: { value: new THREE.Vector3(...readFieldColor()) },
+          uAlpha: { value: fieldAlpha(theme0) },
+        },
         transparent:    true,
         depthWrite:     false,
-        blending:       THREE.AdditiveBlending,
+        blending:       theme0 === 'light' ? THREE.NormalBlending : THREE.AdditiveBlending,
       });
 
       const cloud = new THREE.Points(geo, mat);
@@ -609,8 +677,22 @@ function FooterCanvas() {
       }, { threshold: 0.05 });
       if (footer) io.observe(footer);
 
+      // ── Theme ─────────────────────────────────────────────────────
+      const onTheme = (e) => {
+        const t = (e.detail && e.detail.theme) || 'dark';
+        mat.uniforms.uColor.value.set(...readFieldColor());
+        mat.uniforms.uAlpha.value = fieldAlpha(t);
+        mat.blending = t === 'light' ? THREE.NormalBlending : THREE.AdditiveBlending;
+        mat.needsUpdate = true;
+        // The RAF loop is parked whenever the footer is off-screen, so paint
+        // one frame by hand or the field keeps the old theme's colour.
+        if (!running) renderer.render(scene, camera);
+      };
+      window.addEventListener('themechange', onTheme);
+
       dispose = () => {
         cancelAnimationFrame(rafId);
+        window.removeEventListener('themechange', onTheme);
         io.disconnect(); ro.disconnect();
         renderer.dispose(); geo.dispose(); mat.dispose();
       };
@@ -706,4 +788,4 @@ function Footer() {
   );
 }
 
-Object.assign(window, { Nav, Hero, Marquee, UtilityRow, Projects, Career, Benefits, Footer });
+Object.assign(window, { Nav, Hero, Marquee, UtilityRow, Projects, Career, Benefits, Footer, ThemeToggle, useTheme });
