@@ -53,17 +53,21 @@ function Nav({ active, onNav }) {
 
   return (
     <div className="nav-wrap">
-      <nav className={`nav ${cond ? 'condensed' : ''}`} aria-label="Primary">
-        {items.map((it) =>
-          <a key={it.id} href={`#${it.id}`}
-            className={`nav-link ${active === it.id ? 'active' : ''}`}
-            onClick={(e) => { e.preventDefault(); onNav(it.id); }}>
-            {it.label}
-          </a>
-        )}
-        <span className="nav-sep" aria-hidden />
-        <ThemeToggle />
-      </nav>
+      {/* The pill and the theme circle are centred and condensed as one unit. */}
+      <div className={`nav-group ${cond ? 'condensed' : ''}`}>
+        <nav className="nav" aria-label="Primary">
+          {items.map((it) =>
+            <a key={it.id} href={`#${it.id}`}
+              className={`nav-link ${active === it.id ? 'active' : ''}`}
+              onClick={(e) => { e.preventDefault(); onNav(it.id); }}>
+              {it.label}
+            </a>
+          )}
+        </nav>
+        <div className="nav-theme-wrap">
+          <ThemeToggle />
+        </div>
+      </div>
     </div>);
 
 }

@@ -44,7 +44,7 @@ function Nav({ active, onNav }) {
     { id: "why-me", label: "Why me" },
     { id: "contact", label: "Contact" }
   ];
-  return /* @__PURE__ */ React.createElement("div", { className: "nav-wrap" }, /* @__PURE__ */ React.createElement("nav", { className: `nav ${cond ? "condensed" : ""}`, "aria-label": "Primary" }, items.map(
+  return /* @__PURE__ */ React.createElement("div", { className: "nav-wrap" }, /* @__PURE__ */ React.createElement("div", { className: `nav-group ${cond ? "condensed" : ""}` }, /* @__PURE__ */ React.createElement("nav", { className: "nav", "aria-label": "Primary" }, items.map(
     (it) => /* @__PURE__ */ React.createElement(
       "a",
       {
@@ -58,7 +58,7 @@ function Nav({ active, onNav }) {
       },
       it.label
     )
-  ), /* @__PURE__ */ React.createElement("span", { className: "nav-sep", "aria-hidden": true }), /* @__PURE__ */ React.createElement(ThemeToggle, null)));
+  )), /* @__PURE__ */ React.createElement("div", { className: "nav-theme-wrap" }, /* @__PURE__ */ React.createElement(ThemeToggle, null))));
 }
 function Avatar({ size = 40 }) {
   return /* @__PURE__ */ React.createElement("div", { className: "avatar", style: { width: size, height: size, flex: `0 0 ${size}px` }, "aria-hidden": true }, /* @__PURE__ */ React.createElement(

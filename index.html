@@ -268,12 +268,22 @@
 
   /* NAV */
   .nav-wrap{position:fixed;top:18px;left:0;right:0;z-index:100;display:flex;justify-content:center;pointer-events:none}
-  .nav{pointer-events:auto;display:flex;align-items:center;gap:2px;padding:6px;
+  /* The pill and the theme circle sit in one flex group. .nav-wrap centres the
+     group, so the pair is centred as a unit, and the condensed scale is applied
+     to the group too — scaling each separately would open up the gap between
+     them and push the pair off centre. */
+  .nav-group{display:flex;align-items:center;gap:8px;
+    transition:transform .6s cubic-bezier(.4,0,.2,1)}
+  .nav-group.condensed{transform:scale(.94)}
+  /* One shared surface, so the circle can never drift from the pill. */
+  .nav,.nav-theme-wrap{pointer-events:auto;padding:6px;
     background:var(--glass);border:.5px solid var(--line-2);border-radius:999px;
     -webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);
     box-shadow:var(--shadow-nav);
-    transition:transform .6s cubic-bezier(.4,0,.2,1), padding .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1)}
-  .nav.condensed{padding:4px;transform:scale(.94)}
+    transition:padding .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1)}
+  .nav{display:flex;align-items:center;gap:2px}
+  .nav-theme-wrap{display:flex;flex:0 0 auto}
+  .nav-group.condensed .nav,.nav-group.condensed .nav-theme-wrap{padding:4px}
   .nav a.nav-link{position:relative;display:inline-flex;align-items:center;justify-content:center;
     width:80px;padding:12.5px 0 11.5px;border-radius:999px;font-size:12.5px;line-height:1;color:var(--fg-4);
     letter-spacing:-.005em;
@@ -557,7 +567,17 @@
     .foot-cols{grid-template-columns:1fr 1fr}
     .list .item{grid-template-columns:1fr 1fr;gap:6px 16px}
     .list .item .type{display:none}
-    .nav a.nav-link{width:auto;padding:8.5px 11px 7.5px;font-size:12px}
+    /* Six text links plus the theme circle don't fit a phone at desktop
+       spacing (the pill alone already overflowed 390px). Tighten the chrome
+       and let the links' side padding absorb whatever width remains, so the
+       group keeps 12px gutters down to ~350px. 315px = measured label widths
+       at 12px (+1 for the bolder active link) + pill padding and border +
+       group gap + circle + 24px of gutters. */
+    .nav-group{gap:6px}
+    .nav,.nav-theme-wrap{padding:4px}
+    .nav{gap:0}
+    .nav a.nav-link{width:auto;padding:8.5px clamp(3px, calc((100vw - 315px) / 12), 11px) 7.5px;font-size:12px}
+    .nav-theme-wrap .nav-theme{width:28px;height:28px}
     .card.card-wide{grid-column:auto}
     .card.card-wide .thumb{aspect-ratio:4/3}
     h1.hero-title{font-size:clamp(28px,9vw,44px)}
@@ -593,17 +613,18 @@
     color:var(--on-scrim-2);box-shadow:inset 0 0 0 0.5px var(--on-scrim-line);
     background:transparent;letter-spacing:.06em;line-height:1}
 
-  /* ── Theme toggle (nav) ───────────────────────────────────────────────
-     Icon-only and fixed-width on purpose: a mono "LIGHT"/"DARK" label would
-     re-measure the pill on every toggle and cost layout shift. */
-  .nav-sep{flex:0 0 1px;width:1px;height:16px;background:var(--line-2);margin:0 5px}
-  .nav .nav-theme{appearance:none;-webkit-appearance:none;border:0;padding:0;margin:0;
-    flex:0 0 34px;width:34px;height:34px;border-radius:999px;background:transparent;
+  /* ── Theme toggle (circle next to the nav) ────────────────────────────
+     The button is exactly as tall as a nav link (36.5px) and the circle
+     repeats the pill's padding and border, so the circle's outer size equals
+     the pill's height in every state. Icon-only and fixed-size, so toggling
+     never re-measures the group. */
+  .nav-theme{appearance:none;-webkit-appearance:none;border:0;padding:0;margin:0;
+    flex:0 0 auto;width:36.5px;height:36.5px;border-radius:999px;background:transparent;
     color:var(--fg-4);display:inline-flex;align-items:center;justify-content:center;
-    cursor:default;pointer-events:auto;
+    cursor:default;
     transition:color .6s cubic-bezier(.4,0,.2,1), background .6s cubic-bezier(.4,0,.2,1)}
-  .nav .nav-theme:hover{color:var(--fg);background:var(--fill-hover)}
-  .nav .nav-theme svg{display:block}
+  .nav-theme:hover{color:var(--fg);background:var(--fill-hover)}
+  .nav-theme svg{display:block}
 
   /* ── Focus ────────────────────────────────────────────────────────────
      :focus-visible only, so this is keyboard-exclusive and never fires on
