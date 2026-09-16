@@ -194,7 +194,7 @@ function nowTbilisi() {
 
 // ─── Projects ──────────────────────────────────────────────────────
 const PROJECTS = [
-  { id: 'onyxbet', name: 'OnyxBet',                        tag: 'iGaming · Sportsbook',     pill: 'Concept',    img: 'assets/onyxbet-thumbnail-light.jpg',   link: 'https://dribbble.com/shots/27735762-OnyxBet-Mobile-Sportsbook' },
+  { id: 'onyxbet', name: 'OnyxBet',                        tag: 'iGaming · Sportsbook',     pill: 'Concept',    img: 'assets/onyxbet-thumbnail-2.jpg',       link: 'https://dribbble.com/shots/27735762-OnyxBet-Mobile-Sportsbook' },
   { id: 'garder',  name: 'Garderobe',                      tag: 'E-commerce · Fashion',     pill: 'Case Study', img: 'assets/garderobe-thumbnail-light.jpg', link: 'https://www.behance.net/gallery/247598239/GARDEROBE-UXUI-Luxury-Fashion-E-Commerce-Project' },
   { id: 'visionos',name: 'Vision OS: Google Home UI Concept', tag: 'Spatial · visionOS',   pill: 'Concept',    img: 'assets/visionOS-thumbnail.jpg',         link: 'https://dribbble.com/shots/26049461-Vision-OS-Google-Home-UI-Concept', wide: true },
   { id: 'solvaer', name: 'Solvær',                         tag: 'Contemporary · ecommerce', pill: 'Concept',    img: 'assets/solvaer-thumbnail-light.jpg',   link: 'https://dribbble.com/shots/26724768-Solv-r-Catalog-of-Contemporary-Collectible-Design-Pieces' },
