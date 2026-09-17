@@ -1,6 +1,6 @@
 function useTheme() {
   const [theme, setTheme] = React.useState(
-    () => typeof document !== "undefined" && document.documentElement.getAttribute("data-theme") || "dark"
+    () => typeof document !== "undefined" && document.documentElement.getAttribute("data-theme") || "light"
   );
   React.useEffect(() => {
     const on = (e) => setTheme(e.detail.theme);
@@ -395,7 +395,7 @@ function FooterCanvas() {
       geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(N * 3), 3));
       geo.setAttribute("aSeed", new THREE.BufferAttribute(seeds, 3));
       geo.setAttribute("aRand", new THREE.BufferAttribute(rands, 4));
-      const theme0 = document.documentElement.getAttribute("data-theme") || "dark";
+      const theme0 = document.documentElement.getAttribute("data-theme") || "light";
       const mat = new THREE.ShaderMaterial({
         vertexShader: VERT,
         fragmentShader: FRAG,
@@ -442,7 +442,7 @@ function FooterCanvas() {
       }, { threshold: 0.05 });
       if (footer) io.observe(footer);
       const onTheme = (e) => {
-        const t2 = e.detail && e.detail.theme || "dark";
+        const t2 = e.detail && e.detail.theme || "light";
         mat.uniforms.uColor.value.set(...readFieldColor());
         mat.uniforms.uAlpha.value = fieldAlpha(t2);
         mat.blending = t2 === "light" ? THREE.NormalBlending : THREE.AdditiveBlending;

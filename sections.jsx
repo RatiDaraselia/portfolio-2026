@@ -2,7 +2,7 @@
 // which stays the single source of truth for the active theme.
 function useTheme() {
   const [theme, setTheme] = React.useState(
-    () => (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme')) || 'dark');
+    () => (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme')) || 'light');
   React.useEffect(() => {
     const on = (e) => setTheme(e.detail.theme);
     window.addEventListener('themechange', on);
@@ -631,7 +631,7 @@ function FooterCanvas() {
       geo.setAttribute('aSeed',    new THREE.BufferAttribute(seeds, 3));
       geo.setAttribute('aRand',    new THREE.BufferAttribute(rands, 4));
 
-      const theme0 = document.documentElement.getAttribute('data-theme') || 'dark';
+      const theme0 = document.documentElement.getAttribute('data-theme') || 'light';
       const mat = new THREE.ShaderMaterial({
         vertexShader:   VERT,
         fragmentShader: FRAG,
@@ -687,7 +687,7 @@ function FooterCanvas() {
 
       // ── Theme ─────────────────────────────────────────────────────
       const onTheme = (e) => {
-        const t = (e.detail && e.detail.theme) || 'dark';
+        const t = (e.detail && e.detail.theme) || 'light';
         mat.uniforms.uColor.value.set(...readFieldColor());
         mat.uniforms.uAlpha.value = fieldAlpha(t);
         mat.blending = t === 'light' ? THREE.NormalBlending : THREE.AdditiveBlending;

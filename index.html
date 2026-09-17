@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en">
+<!-- Light is the default for every visit, set right in the markup so the first
+     frame is light even before any script runs, or with JavaScript disabled. -->
+<html lang="en" data-theme="light" style="color-scheme:light">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,23 +10,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@200..700&display=swap" rel="stylesheet" />
-<meta name="theme-color" content="#000000" />
+<meta name="theme-color" content="#FBFBFB" />
 
-<!-- Theme resolution. Blocking, inline, and BEFORE <style> so the attribute is on
-     <html> before first paint. Must not be a .jsx file: Babel fetches those over
-     XHR long after the first frame, which is exactly the flash we're avoiding. -->
+<!-- Theme control. Inline and before <style>, so nothing can paint first.
+     Every visit opens in light: the OS preference and any choice made on an
+     earlier visit are deliberately ignored. The toggle switches theme for the
+     current page view only and is not remembered. -->
 <script>
 (function(){
-  var KEY='bd-theme', root=document.documentElement, tid=null;
+  var root=document.documentElement, tid=null;
 
-  function stored(){
-    try{ var v=localStorage.getItem(KEY); return (v==='light'||v==='dark')?v:null; }catch(e){ return null; }
-  }
-  function resolve(){
-    var v=stored(); if(v) return v;
-    try{ if(window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) return 'light'; }catch(e){}
-    return 'dark';
-  }
+  // Visitors who toggled to dark before this change still have it saved.
+  // Clear it so nothing can resurrect it later.
+  try{ localStorage.removeItem('bd-theme'); }catch(e){}
+
   function apply(t, animate){
     root.setAttribute('data-theme', t);
     // Set color-scheme imperatively as well as in CSS. The browser paints its
@@ -46,18 +45,10 @@
     try{ window.dispatchEvent(new CustomEvent('themechange',{detail:{theme:t}})); }catch(e){}
   }
 
-  window.__setTheme=function(t){ try{ localStorage.setItem(KEY,t); }catch(e){} apply(t,true); };
-  window.__getTheme=function(){ return root.getAttribute('data-theme')||'dark'; };
+  window.__setTheme=function(t){ apply(t,true); };
+  window.__getTheme=function(){ return root.getAttribute('data-theme')||'light'; };
 
-  apply(resolve(), false);
-
-  // Track the OS only until the user makes an explicit choice; after that
-  // localStorage wins forever.
-  try{
-    matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(e){
-      if(!stored()) apply(e.matches?'light':'dark', true);
-    });
-  }catch(e){}
+  apply('light', false);
 })();
 </script>
 <style>
