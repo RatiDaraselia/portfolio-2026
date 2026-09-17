@@ -2,7 +2,7 @@ const { motion, useMotionValue, useSpring } = window.Motion;
 function CursorDot({ enabled }) {
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
-  const springConfig = { damping: 30, stiffness: 700, mass: 0.3 };
+  const springConfig = { damping: 26, stiffness: 350, mass: 0.5 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
   const dotRef = React.useRef(null);

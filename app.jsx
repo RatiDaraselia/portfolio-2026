@@ -4,11 +4,14 @@ const { motion, useMotionValue, useSpring } = window.Motion;
 function CursorDot({ enabled }) {
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
-  // Critically damped (zeta ~1.04): no overshoot, no wobble. Trails the real
-  // pointer by ~43ms and settles ~230ms after the hand stops. The previous
-  // tuning (k260 c29.5 m0.6) lagged 113ms and drifted for ~590ms after a
-  // flick, which is what read as "heavy".
-  const springConfig = { damping: 30, stiffness: 700, mass: 0.3 };
+  // Lag behind the pointer is damping / stiffness seconds, so the feel is set
+  // by that ratio. Tuned between two tested extremes:
+  //   k260 c29.5 m0.6  -> 113ms lag, ~470ms drift after stopping: too heavy
+  //   k700 c30   m0.3  ->  43ms lag, ~110ms drift: too raw, no visible glide
+  // This sits at 74ms lag, so the glide reads clearly while moving, but settles
+  // ~215ms after the hand stops, nearer the light end, because the lingering
+  // drift was most of what felt heavy. zeta ~0.98: no overshoot or wobble.
+  const springConfig = { damping: 26, stiffness: 350, mass: 0.5 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
 
