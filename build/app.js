@@ -2,7 +2,7 @@ const { motion, useMotionValue, useSpring } = window.Motion;
 function CursorDot({ enabled }) {
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
-  const springConfig = { damping: 29.5, stiffness: 260, mass: 0.6 };
+  const springConfig = { damping: 30, stiffness: 700, mass: 0.3 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
   const dotRef = React.useRef(null);
@@ -43,34 +43,27 @@ function CursorDot({ enabled }) {
       cursorY.set(e.clientY);
       dot.classList.add("ready");
     };
-    const hoverSel = 'a, button, .nav-link, .btn, [role="button"]';
-    const clickSel = 'a, button, .btn, [role="button"]';
-    const tgSel = ".btn-tg";
+    const clickSel = 'a, button, [role="button"]';
     const thumbSel = ".card .thumb";
     const wrap = wrapRef.current;
     const setBlend = (mode) => {
       if (wrap) wrap.style.mixBlendMode = mode;
     };
     const onOver = (e) => {
-      if (e.target.closest && e.target.closest(thumbSel)) {
-        const thumb = e.target.closest(thumbSel);
+      if (!e.target.closest) return;
+      const thumb = e.target.closest(thumbSel);
+      if (thumb) {
         const img = thumb.querySelector("img");
         if (img && lensImg) lensImg.src = img.src;
         currentThumb = img ? thumb : null;
         if (currentThumb) {
+          dot.classList.remove("point");
           dot.classList.add("lens");
           setBlend("normal");
           return;
         }
       }
-      if (e.target.closest && e.target.closest(".card")) return;
-      const isClick = e.target.closest && e.target.closest(clickSel);
-      if (e.target.closest && e.target.closest(hoverSel) && !isClick) dot.classList.add("hover");
-      if (isClick) dot.classList.add("hide");
-      if (e.target.closest && e.target.closest(tgSel)) {
-        dot.classList.add("on-tg");
-        setBlend("normal");
-      }
+      dot.classList.toggle("point", !!e.target.closest(clickSel));
     };
     const onOut = (e) => {
       if (e.target.closest && e.target.closest(thumbSel)) {
@@ -83,13 +76,6 @@ function CursorDot({ enabled }) {
         }
         return;
       }
-      if (e.target.closest && e.target.closest(".card")) return;
-      if (e.target.closest && e.target.closest(hoverSel)) dot.classList.remove("hover");
-      if (e.target.closest && e.target.closest(clickSel)) dot.classList.remove("hide");
-      if (e.target.closest && e.target.closest(tgSel)) {
-        dot.classList.remove("on-tg");
-        setBlend("difference");
-      }
     };
     const onDown = () => dot.classList.add("press");
     const onUp = () => dot.classList.remove("press");
@@ -100,6 +86,9 @@ function CursorDot({ enabled }) {
     window.addEventListener("mouseout", onOut);
     window.addEventListener("mousedown", onDown);
     window.addEventListener("mouseup", onUp);
+    window.addEventListener("dragstart", onUp);
+    window.addEventListener("dragend", onUp);
+    window.addEventListener("blur", onUp);
     document.addEventListener("mouseleave", onLeave);
     document.addEventListener("mouseenter", onEnter);
     return () => {
@@ -110,10 +99,13 @@ function CursorDot({ enabled }) {
       window.removeEventListener("mouseout", onOut);
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("dragstart", onUp);
+      window.removeEventListener("dragend", onUp);
+      window.removeEventListener("blur", onUp);
       document.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("mouseenter", onEnter);
       html.classList.remove("has-custom-cursor");
-      dot.classList.remove("ready", "hover", "press", "on-tg", "hide", "lens");
+      dot.classList.remove("ready", "point", "press", "lens");
       currentThumb = null;
       if (lensImg) lensImg.src = "";
     };

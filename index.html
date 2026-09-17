@@ -233,20 +233,20 @@
      The #fff below is deliberate and must NOT be tokenised: it is the operand
      of the wrapper's mix-blend-mode:difference, so it inverts against whatever
      is under it and is already correct in both themes. Binding it to --fg
-     would make the dot invisible in light. The two states that switch the
-     wrapper to mix-blend-mode:normal (.on-tg, .lens) DO use tokens. */
+     would make the dot invisible in light. The one state that switches the
+     wrapper to mix-blend-mode:normal (.lens) DOES use tokens. */
   .cursor{width:20px;height:20px;border-radius:999px;
     background:#fff;
     transform:translate(-50%,-50%);transition:width .25s cubic-bezier(.2,.8,.2,1),
       height .25s cubic-bezier(.2,.8,.2,1), opacity .2s ease, background .2s ease;
     will-change:width,height;opacity:0}
   .cursor.ready{opacity:1}
-  .cursor.ready.hide{opacity:0}
-  .cursor.hover{width:48px;height:48px}
+  /* Over clickable elements the dot contracts to a precise point rather than
+     disappearing. Small enough never to mask the element's own hover state,
+     and still inverting, so it stays visible on any surface. */
+  .cursor.point{width:8px;height:8px}
   .cursor.press{width:14px;height:14px}
-  /* On Telegram-blue surfaces, drop blend-mode (avoids dirty-orange invert) — JS toggles parent mix-blend-mode */
-  .cursor.on-tg{background:transparent;
-    border:1.5px solid var(--fg);box-shadow:none}
+  .cursor.point.press{width:6px;height:6px}
   .cursor.lens{width:100px;height:50px;border-radius:9999px;background:transparent;
     border:0.5px solid var(--line-2);overflow:hidden}
   #cursor-lens-img{position:absolute;display:none;pointer-events:none;top:0;left:0}
