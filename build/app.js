@@ -136,6 +136,8 @@ function App() {
   const [active, setActive] = React.useState("about");
   const lenisRef = React.useRef(null);
   React.useEffect(() => {
+    const finePointer = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (!finePointer || !window.Lenis) return;
     const lenis = new window.Lenis({
       duration: 1.2,
       easing: (t2) => Math.min(1, 1.001 - Math.pow(2, -10 * t2)),
@@ -145,23 +147,37 @@ function App() {
       smoothTouch: false
     });
     lenisRef.current = lenis;
+    let rafId = 0;
     const raf = (time) => {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     };
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
+    const onLock = (e) => {
+      if (e.detail && e.detail.locked) lenis.stop();
+      else lenis.start();
+    };
+    window.addEventListener("scrolllock", onLock);
     return () => {
+      window.removeEventListener("scrolllock", onLock);
+      cancelAnimationFrame(rafId);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
+  const layoutTop = (el) => {
+    let y = 0;
+    for (let n = el; n; n = n.offsetParent) y += n.offsetTop + (n.offsetParent ? n.offsetParent.clientTop : 0);
+    return y;
+  };
   const onNav = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
+    const top = layoutTop(el);
     if (lenisRef.current) {
-      lenisRef.current.scrollTo(el, { offset: -20 });
+      lenisRef.current.scrollTo(top, { offset: -20 });
     } else {
-      const y = el.getBoundingClientRect().top + window.scrollY - 20;
-      window.scrollTo({ top: y, behavior: "smooth" });
+      window.scrollTo({ top: top - 20, behavior: "smooth" });
     }
   };
   React.useEffect(() => {

@@ -449,9 +449,11 @@ function ResumeModal({ onClose }) {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
+    window.dispatchEvent(new CustomEvent('scrolllock', { detail: { locked: true } }));
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      window.dispatchEvent(new CustomEvent('scrolllock', { detail: { locked: false } }));
     };
   }, [onClose]);
 

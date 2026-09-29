@@ -249,9 +249,11 @@ function ResumeModal({ onClose }) {
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
+    window.dispatchEvent(new CustomEvent("scrolllock", { detail: { locked: true } }));
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      window.dispatchEvent(new CustomEvent("scrolllock", { detail: { locked: false } }));
     };
   }, [onClose]);
   return /* @__PURE__ */ React.createElement("div", { className: "resume-modal-backdrop", onClick: onClose }, /* @__PURE__ */ React.createElement("div", { className: "resume-modal-inner", onClick: (e) => e.stopPropagation() }, /* @__PURE__ */ React.createElement("div", { className: "resume-modal-frame" }, /* @__PURE__ */ React.createElement("iframe", { src: "assets/CV_EN.pdf", title: "Resume Preview" })), /* @__PURE__ */ React.createElement("div", { className: "resume-modal-hint" }, "Collapse the Document \u2014 ", /* @__PURE__ */ React.createElement("kbd", { className: "resume-kbd" }, "ESC"))));
